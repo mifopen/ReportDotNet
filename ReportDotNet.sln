@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportDotNet.Core", "ReportDotNet.Core\ReportDotNet.Core.csproj", "{3BE01964-7B8B-40E1-9BC1-8FA13AB274AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportDotNet.Playground.Web", "ReportDotNet.Playground.WebApp\ReportDotNet.Playground.Web.csproj", "{C32C259C-D310-4314-96AF-3FCC4E742DDC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportDotNet.Playground.Web", "ReportDotNet.Playground.Web\ReportDotNet.Playground.Web.csproj", "{C32C259C-D310-4314-96AF-3FCC4E742DDC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportDotNet.Docx", "ReportDotNet.Docx\ReportDotNet.Docx.csproj", "{4D668235-EDD3-4C25-9CA7-59878E3D4FFB}"
 EndProject
