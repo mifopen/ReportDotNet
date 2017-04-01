@@ -1,8 +1,8 @@
 using System.IO;
 using Microsoft.AspNet.SignalR;
-using ReportDotNet.WebApp.Controllers;
+using ReportDotNet.Web.Controllers;
 
-namespace ReportDotNet.WebApp.App
+namespace ReportDotNet.Web.App
 {
 	public class ReportWatcher
 	{

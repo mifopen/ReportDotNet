@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using ReportDotNet.Core;
 using ReportDotNet.Playground.Template;
 
-namespace ReportDotNet.WebApp.App
+namespace ReportDotNet.Web.App
 {
 	public class ReportRenderer
 	{

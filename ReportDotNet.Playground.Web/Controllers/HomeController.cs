@@ -4,9 +4,9 @@ using System.Web.Mvc;
 using ReportDotNet.Core;
 using ReportDotNet.Docx;
 using ReportDotNet.Playground.Template;
-using ReportDotNet.WebApp.App;
+using ReportDotNet.Web.App;
 
-namespace ReportDotNet.WebApp.Controllers
+namespace ReportDotNet.Web.Controllers
 {
 	public class HomeController: Controller
 	{

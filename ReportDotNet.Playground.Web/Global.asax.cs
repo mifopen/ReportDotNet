@@ -2,12 +2,12 @@
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using ReportDotNet.WebApp.App;
+using ReportDotNet.Web.App;
 using SimpleInjector;
 using SimpleInjector.Integration.Web;
 using SimpleInjector.Integration.Web.Mvc;
 
-namespace ReportDotNet.WebApp
+namespace ReportDotNet.Web
 {
 	public class MvcApplication: HttpApplication
 	{

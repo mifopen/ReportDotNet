@@ -1,6 +1,6 @@
 using Microsoft.AspNet.SignalR;
 
-namespace ReportDotNet.WebApp.Controllers
+namespace ReportDotNet.Web.Controllers
 {
 	public class ReportHub: Hub
 	{

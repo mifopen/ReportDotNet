@@ -1,10 +1,10 @@
 ﻿using Microsoft.Owin;
 using Owin;
-using ReportDotNet.WebApp;
+using ReportDotNet.Web;
 
 [assembly: OwinStartup(typeof (Startup))]
 
-namespace ReportDotNet.WebApp
+namespace ReportDotNet.Web
 {
 	public class Startup
 	{

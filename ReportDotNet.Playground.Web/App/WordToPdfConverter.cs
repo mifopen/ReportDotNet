@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using Microsoft.Office.Interop.Word;
 
-namespace ReportDotNet.WebApp.App
+namespace ReportDotNet.Web.App
 {
 	public class WordToPdfConverter
 	{

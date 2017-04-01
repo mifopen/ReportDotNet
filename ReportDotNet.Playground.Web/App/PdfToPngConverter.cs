@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using PdfiumViewer;
 
-namespace ReportDotNet.WebApp.App
+namespace ReportDotNet.Web.App
 {
 	public class PdfToPngConverter
 	{
