@@ -22,8 +22,8 @@ namespace ReportDotNet.Core
 		public CellBuilder SpaceBetweenLines(double? spaceBetweenLines) => Chain(_ => this.spaceBetweenLines = spaceBetweenLines);
 		public CellBuilder VerticalAlignment(VerticalAlignment verticalAlignment) => Chain(p => p.VerticalAlignment = verticalAlignment);
 		public CellBuilder Borders(Borders borders) => Chain(p => p.Borders = borders);
-		public CellBuilder MergeUp() => Chain(p => p.MergeUp = true);
-		public CellBuilder MergeDown() => Chain(p => p.MergeDown = true);
+		public CellBuilder MergeUp(bool mergeUp = true) => Chain(p => p.MergeUp = mergeUp);
+		public CellBuilder MergeDown(bool mergeDown = true) => Chain(p => p.MergeDown = mergeDown);
 		public CellBuilder TextDirection(TextDirection textDirection) => Chain(p => p.TextDirection = textDirection);
 		public CellBuilder BackgroundColor(Color backgroundColor) => Chain(p => p.BackgroundColor = backgroundColor);
 		public CellBuilder BorderSize(int borderSize) => Chain(p => p.BorderSize = borderSize);
