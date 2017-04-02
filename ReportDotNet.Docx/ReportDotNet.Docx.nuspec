@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>ReportDotNet.Docx</id>
+    <version>$version$</version>
+    <title>ReportDotNet.Docx</title>
+    <authors>mif.open@gmail.com</authors>
+    <owners>mif.open@gmail.com</owners>                        
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Simple .NET library for complex reports in docx format</description>
+    <releaseNotes>Hello! =)</releaseNotes>
+    <copyright>Copyright 2017</copyright>
+    <tags>reports docx reporting-engine reporting reporting-services docx-generator wysiwyg</tags>
+  </metadata>
+</package>
