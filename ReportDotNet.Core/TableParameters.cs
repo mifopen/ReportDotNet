@@ -9,6 +9,6 @@ namespace ReportDotNet.Core
 		public int? CellMarginLeft { get; set; }
 		public int? CellMarginRight { get; set; }
 		public int? FontSize { get; set; }
-		public IEnumerable<Row> Rows { get; set; } = new Row[0];
+		public List<Row> Rows { get; set; } = new List<Row>();
 	}
 }

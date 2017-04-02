@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ReportDotNet.Core
 {
@@ -8,10 +9,16 @@ namespace ReportDotNet.Core
 
 		public TableBuilder Borders(Borders borders) => Chain(p => p.Borders = borders);
 		public TableBuilder FontSize(int fontSize) => Chain(p => p.FontSize = fontSize);
-		public TableBuilder CellMarginLeft(int cellMarginLeft) => Chain(p => p.CellMarginLeft = cellMarginLeft);
-		public TableBuilder CellMarginRight(int cellMarginRight) => Chain(p => p.CellMarginRight = cellMarginRight);
+
+		public TableBuilder CellMargin(int? left = null, int? right = null) => Chain(p =>
+																					 {
+																						 p.CellMarginLeft = left;
+																						 p.CellMarginRight = right;
+																					 });
+
 		public TableBuilder Width(int width) => Chain(p => p.Width = width);
-		public TableBuilder Rows(params Row[] rows) => Chain(p => p.Rows = rows);
+		public TableBuilder Add(params Row[] rows) => Chain(p => p.Rows.AddRange(rows));
+		public TableBuilder Add(IEnumerable<Row> rows) => Chain(p => p.Rows.AddRange(rows));
 
 		public Table Build() => new Table(parameters);
 

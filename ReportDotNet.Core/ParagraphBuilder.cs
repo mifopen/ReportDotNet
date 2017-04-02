@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 
 namespace ReportDotNet.Core
 {
@@ -11,9 +10,9 @@ namespace ReportDotNet.Core
 		public ParagraphBuilder Alignment(Alignment alignment) => Chain(p => p.Alignment = alignment);
 		public ParagraphBuilder Bold(bool bold = true) => Chain(p => p.Bold = bold);
 		public ParagraphBuilder SpaceBetweenLines(double spaceBetweenLines) => Chain(p => p.SpaceBetweenLines = spaceBetweenLines);
-		public ParagraphBuilder AddText(string text) => Chain(p => p.Parts = p.Parts.Concat(new[] { new TextPart { Text = text } }));
-		public ParagraphBuilder AddField(Field field) => Chain(p => p.Parts = p.Parts.Concat(new[] { new FieldPart { Field = field } }));
-		public ParagraphBuilder AddPicture(Picture picture) => Chain(p => p.Parts = p.Parts.Concat(new[] { new PicturePart { Picture = picture } }));
+		public ParagraphBuilder Add(string text) => Chain(p => p.Parts.Add(new TextPart { Text = text }));
+		public ParagraphBuilder Add(Field field) => Chain(p => p.Parts.Add(new FieldPart { Field = field }));
+		public ParagraphBuilder Add(Picture picture) => Chain(p => p.Parts.Add(new PicturePart { Picture = picture }));
 
 		public Paragraph Build() => new Paragraph(parameters);
 

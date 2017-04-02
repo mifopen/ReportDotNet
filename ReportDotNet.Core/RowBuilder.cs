@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ReportDotNet.Core
 {
@@ -8,7 +9,8 @@ namespace ReportDotNet.Core
 
 		public RowBuilder Height(int height) => Chain(p => p.Height = height);
 		public RowBuilder HeightType(RowHeightType heightType) => Chain(p => p.HeightType = heightType);
-		public RowBuilder Cells(params Cell[] cells) => Chain(p => p.Cells = cells);
+		public RowBuilder Add(params Cell[] cells) => Chain(p => p.Cells.AddRange(cells));
+		public RowBuilder Add(IEnumerable<Cell> cells) => Chain(p => p.Cells.AddRange(cells));
 
 		public Row Build() => new Row(parameters);
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace ReportDotNet.Core
@@ -12,9 +13,9 @@ namespace ReportDotNet.Core
 		private bool bold;
 		private double? spaceBetweenLines;
 
-		public CellBuilder Width(int width) => Chain(p => p.Width = width);
-		public CellBuilder Paragraph(Paragraph paragraph) => Chain(p => p.Paragraph = paragraph);
-		public CellBuilder Text(string text) => Chain(_ => this.text = text);
+		public CellBuilder Width(int? width) => Chain(p => p.Width = width);
+		public CellBuilder Add(Paragraph paragraph) => Chain(p => p.Paragraph = paragraph);
+		public CellBuilder Add(string text) => Chain(_ => this.text = text);
 		public CellBuilder FontSize(int fontSize) => Chain(_ => this.fontSize = fontSize);
 		public CellBuilder Alignment(Alignment alignment) => Chain(_ => this.alignment = alignment);
 		public CellBuilder Bold(bool bold = true) => Chain(_ => this.bold = bold);
@@ -50,7 +51,7 @@ namespace ReportDotNet.Core
 			//todo clone parameters?
 			parameters.Paragraph = parameters.Paragraph ?? new Paragraph(new ParagraphParameters
 																		 {
-																			 Parts = new[] { new TextPart { Text = text } },
+																			 Parts = new List<Part> { new TextPart { Text = text } },
 																			 FontSize = fontSize,
 																			 Alignment = alignment,
 																			 Bold = bold,
