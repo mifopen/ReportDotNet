@@ -63,6 +63,9 @@ namespace ReportDotNet.Docx
 			var textPart = part as TextPart;
 			if (textPart != null)
 			{
+				if (textPart.Text == null)
+					return run;
+
 				var lines = textPart.Text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
 				for (var i = 0; i < lines.Length; i++)
 				{
@@ -85,6 +88,9 @@ namespace ReportDotNet.Docx
 			var picturePart = part as PicturePart;
 			if (picturePart != null)
 			{
+				if (picturePart.Picture?.Bytes == null)
+					return run;
+
 				run.AppendChild(picturePart.Picture.Convert(document));
 				return run;
 			}
