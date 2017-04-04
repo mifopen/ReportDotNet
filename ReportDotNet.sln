@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportDotNet.Playground.Tem
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportDotNet.Playground.Console", "ReportDotNet.Playground.Console\ReportDotNet.Playground.Console.csproj", "{CC189403-C262-4025-BEE9-9CCA4FCD336D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportDotNet.Core.Tests", "ReportDotNet.Core.Tests\ReportDotNet.Core.Tests.csproj", "{92207667-DC9F-4DE8-954D-0067839B89CD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{CC189403-C262-4025-BEE9-9CCA4FCD336D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC189403-C262-4025-BEE9-9CCA4FCD336D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC189403-C262-4025-BEE9-9CCA4FCD336D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92207667-DC9F-4DE8-954D-0067839B89CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92207667-DC9F-4DE8-954D-0067839B89CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92207667-DC9F-4DE8-954D-0067839B89CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92207667-DC9F-4DE8-954D-0067839B89CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
