@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Web.Hosting;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using ReportDotNet.Core;
@@ -13,13 +14,30 @@ namespace ReportDotNet.Web.App
 {
 	public class ReportRenderer
 	{
-		public Report Render(IDocument document, string sourcePath)
+		private readonly DirectoryWatcher directoryWatcher;
+
+		public ReportRenderer(DirectoryWatcher directoryWatcher)
 		{
-			var sourceAssembly = CreateAssembly(sourcePath);
-			var sourceType = sourceAssembly.GetTypes().Single(x => !x.IsNested);
+			this.directoryWatcher = directoryWatcher;
+		}
+
+		public Report Render(IDocument document)
+		{
+			var templateProjectDirectory = GetTemplateProjectDirectory();
+			var templateDirectoryName = File.ReadAllText(Path.Combine(templateProjectDirectory, "CurrentTemplateDirectory.txt"));
+			var templateDirectoryPath = Path.Combine(templateProjectDirectory, templateDirectoryName);
+			EnsureTemplateDirectory(templateDirectoryPath, templateDirectoryName, templateProjectDirectory);
+
+			var templatePath = Path.Combine(templateDirectoryPath, "Template.cs");
+			var templateType = CreateTemplateType(templatePath);
 			var log = new List<string>();
 			Action<int, string, object> logAction = (lineNumber, line, obj) => log.Add($"#{lineNumber}: {line}: {obj}");
-			GetFillDocumentMethod(sourceType).Invoke(null, new object[] { document, logAction });
+			var method = GetFillDocumentMethod(templateType);
+			var arguments = method.GetParameters().Length == 2
+								? new object[] { document, logAction }
+								: new object[] { document, logAction, templateDirectoryPath };
+			method.Invoke(null, arguments);
+			directoryWatcher.Watch(templateProjectDirectory);
 			return new Report
 				   {
 					   Log = log.ToArray(),
@@ -27,25 +45,25 @@ namespace ReportDotNet.Web.App
 				   };
 		}
 
-		private static MethodInfo GetFillDocumentMethod(Type type)
+		private static void EnsureTemplateDirectory(string templateDirectoryPath, string templateDirectoryName, string templateProjectDirectory)
 		{
-			return type.GetMethods()
-					   .Single(m =>
-							   {
-								   var parameters = m.GetParameters();
-								   return m.IsStatic
-										  && parameters.Length == 2
-										  && parameters[0].ParameterType == typeof(IDocument)
-										  && parameters[1].ParameterType == typeof(Action<int, string, object>);
-							   });
+			if (!Directory.Exists(templateDirectoryPath))
+			{
+				var directories = new DirectoryInfo(templateProjectDirectory)
+					.EnumerateDirectories()
+					.Select(x => x.Name)
+					.Except(new[] { "bin", "obj", "Properties" });
+				throw new Exception($"Are you sure that directory {templateDirectoryName} exists in template project?" +
+									$" There are only {string.Join(", ", directories)}.");
+			}
 		}
 
-		private static Assembly CreateAssembly(string sourcePath)
+		private static Type CreateTemplateType(string templatePath)
 		{
 			var references = new[]
 							 {
 								 Assembly.GetExecutingAssembly(),
-								 typeof(Template).Assembly
+								 typeof(StubForNamespace).Assembly
 							 }
 				.SelectMany(x => x.GetReferencedAssemblies())
 				.Select(x => x.FullName)
@@ -54,7 +72,7 @@ namespace ReportDotNet.Web.App
 				.Select(a => MetadataReference.CreateFromFile(a.Location))
 				.ToArray();
 			var compilation = CSharpCompilation.Create(assemblyName: "NewReport.dll",
-													   syntaxTrees: new[] { GetSyntaxTree(sourcePath) },
+													   syntaxTrees: new[] { GetSyntaxTree(templatePath) },
 													   references: references,
 													   options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
 			try
@@ -63,7 +81,7 @@ namespace ReportDotNet.Web.App
 				{
 					var result = compilation.Emit(ms);
 					if (result.Success)
-						return Assembly.Load(ms.ToArray());
+						return Assembly.Load(ms.ToArray()).GetTypes().Single(x => !x.IsNested);
 
 					var failures = result.Diagnostics.Where(diagnostic =>
 																diagnostic.IsWarningAsError ||
@@ -75,6 +93,27 @@ namespace ReportDotNet.Web.App
 			{
 				File.Delete(compilation.AssemblyName);
 			}
+		}
+
+		private static string GetTemplateProjectDirectory()
+		{
+			var webProjectPath = HostingEnvironment.ApplicationPhysicalPath;
+			var solutionPath = Path.Combine(webProjectPath, "..");
+			return Path.Combine(solutionPath, typeof(StubForNamespace).Namespace);
+		}
+
+		private static MethodInfo GetFillDocumentMethod(Type type)
+		{
+			return type.GetMethods()
+					   .Single(m =>
+							   {
+								   var parameters = m.GetParameters();
+								   return m.IsStatic
+										  && parameters.Length >= 2
+										  && parameters[0].ParameterType == typeof(IDocument)
+										  && parameters[1].ParameterType == typeof(Action<int, string, object>)
+										  && (parameters.Length == 2 || parameters[2].ParameterType == typeof(string));
+							   });
 		}
 
 		private static readonly Regex logRegex = new Regex("\\slog[(](.*)[)];", RegexOptions.Compiled | RegexOptions.Singleline);

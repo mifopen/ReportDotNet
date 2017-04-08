@@ -35,14 +35,20 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Template.cs" />
+    <Compile Include="SimpleExample\Template.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StampAndSignsExample\Template.cs" />
+    <Compile Include="StampAndSignsExample\Data.cs" />
+    <Compile Include="StubForNamespace.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ReportDotNet.Core\ReportDotNet.Core.csproj">
       <Project>{3be01964-7b8b-40e1-9bc1-8fa13ab274ae}</Project>
       <Name>ReportDotNet.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CurrentTemplateDirectory.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

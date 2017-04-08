@@ -30,13 +30,20 @@ namespace ReportDotNet.Web.App
 
 		private void CleanOldWords()
 		{
-			if (application.IsValueCreated)
-				return;
-
-			foreach (var p in Process.GetProcessesByName("winword"))
+			try
 			{
-				p.Kill();
-				p.WaitForExit();
+				if (application.IsValueCreated)
+					return;
+
+				foreach (var p in Process.GetProcessesByName("winword"))
+				{
+					p.Kill();
+					p.WaitForExit();
+				}
+			}
+			catch (Exception)
+			{
+				// ignored
 			}
 		}
 

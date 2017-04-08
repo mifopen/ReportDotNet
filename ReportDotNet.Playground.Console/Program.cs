@@ -13,7 +13,7 @@ namespace ReportDotNet.Playground.Console
 			if (File.Exists(tempFileName))
 				File.Delete(tempFileName);
 			var document = Create.Document.Docx();
-			Template.Template.FillDocument(document, System.Console.Out.WriteLine);
+			Template.SimpleExample.Template.FillDocument(document, System.Console.Out.WriteLine);
 			File.WriteAllBytes(tempFileName, document.Save());
 			Process.Start(new ProcessStartInfo("winword.exe", tempFileName)
 						  {

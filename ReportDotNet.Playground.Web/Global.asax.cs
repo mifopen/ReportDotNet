@@ -23,6 +23,8 @@ namespace ReportDotNet.Web
 			container.Options.DefaultScopedLifestyle = new WebRequestLifestyle();
 			container.RegisterMvcControllers(Assembly.GetExecutingAssembly());
 			container.RegisterSingleton<WordToPdfConverter>();
+			container.RegisterSingleton<ReportRenderer>();
+			container.RegisterSingleton<DirectoryWatcher>();
 			container.Verify();
 			DependencyResolver.SetResolver(new SimpleInjectorDependencyResolver(container));
 		}

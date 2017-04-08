@@ -185,7 +185,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App\PdfToPngConverter.cs" />
-    <Compile Include="App\ReportWatcher.cs" />
+    <Compile Include="App\DirectoryWatcher.cs" />
     <Compile Include="App\WordToPdfConverter.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
