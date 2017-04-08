@@ -35,6 +35,8 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PaymentOrderExample\Data.cs" />
+    <Compile Include="PaymentOrderExample\Template.cs" />
     <Compile Include="SimpleExample\Template.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StampAndSignsExample\Template.cs" />

@@ -60,17 +60,14 @@ namespace ReportDotNet.Web.App
 
 		private static Type CreateTemplateType(string templatePath)
 		{
-			var references = new[]
-							 {
-								 Assembly.GetExecutingAssembly(),
-								 typeof(StubForNamespace).Assembly
-							 }
-				.SelectMany(x => x.GetReferencedAssemblies())
-				.Select(x => x.FullName)
-				.Distinct()
-				.Select(Assembly.Load)
-				.Select(a => MetadataReference.CreateFromFile(a.Location))
-				.ToArray();
+			var templateAssembly = typeof(StubForNamespace).Assembly;
+			var references = templateAssembly.GetReferencedAssemblies()
+											 .Select(x => x.FullName)
+											 .Distinct()
+											 .Select(Assembly.Load)
+											 .Concat(new[] { templateAssembly })
+											 .Select(a => MetadataReference.CreateFromFile(a.Location))
+											 .ToArray();
 			var compilation = CSharpCompilation.Create(assemblyName: "NewReport.dll",
 													   syntaxTrees: new[] { GetSyntaxTree(templatePath) },
 													   references: references,
@@ -81,7 +78,13 @@ namespace ReportDotNet.Web.App
 				{
 					var result = compilation.Emit(ms);
 					if (result.Success)
-						return Assembly.Load(ms.ToArray()).GetTypes().Single(x => !x.IsNested);
+					{
+						var types = Assembly.Load(ms.ToArray()).GetTypes().Where(x => x.Name == "Template").ToArray();
+						if (types.Length != 1)
+							throw new Exception($"There must be at least one type with name Template in example {templatePath}");
+
+						return types.Single();
+					}
 
 					var failures = result.Diagnostics.Where(diagnostic =>
 																diagnostic.IsWarningAsError ||
