@@ -5,7 +5,8 @@
     <version>$version$</version>
     <title>ReportDotNet.Docx</title>
     <authors>mif.open@gmail.com</authors>
-    <owners>mif.open@gmail.com</owners>                        
+    <owners>mif.open@gmail.com</owners>
+    <projectUrl>https://github.com/mifopen/ReportDotNet</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Simple .NET library for complex reports in docx format</description>
     <releaseNotes>Hello! =)</releaseNotes>
