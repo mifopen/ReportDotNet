@@ -94,16 +94,18 @@ namespace ReportDotNet.Docx
 			}
 
 			var picturePart = part as PicturePart;
-			if (picturePart?.Picture?.IsEmpty() == false)
+			if (picturePart != null)
 			{
-				run.AppendChild(picturePart.Picture.Convert(document));
+				if (picturePart.Picture?.IsEmpty() == false)
+					run.AppendChild(picturePart.Picture.Convert(document));
 				return run;
 			}
 
 			var stubPicturePart = part as StubPicturePart;
-			if (stubPicturePart?.StubPicture != null)
+			if (stubPicturePart != null)
 			{
-				run.AppendChild(stubPicturePart.StubPicture.Convert(document));
+				if (stubPicturePart.StubPicture != null)
+					run.AppendChild(stubPicturePart.StubPicture.Convert(document));
 				return run;
 			}
 
