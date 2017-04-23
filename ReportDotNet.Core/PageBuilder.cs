@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace ReportDotNet.Core
 {
@@ -11,8 +12,12 @@ namespace ReportDotNet.Core
 		public PageBuilder FooterMargin(int footerMargin) => Chain(p => p.FooterMargin = footerMargin);
 		public PageBuilder Size(PageSize size) => Chain(p => p.Size = size);
 		public PageBuilder Footer(Table footer) => Chain(p => p.Footer = footer);
-		public PageBuilder Add(params Paragraph[] paragraphs) => Chain(p => p.Elements.AddRange(paragraphs));
-		public PageBuilder Add(params Table[] tables) => Chain(p => p.Elements.AddRange(tables));
+
+		public PageBuilder Add(params Paragraph[] paragraphs) =>
+			Chain(p => p.Elements.AddRange(paragraphs.Where(x => x != null)));
+
+		public PageBuilder Add(params Table[] tables) =>
+			Chain(p => p.Elements.AddRange(tables.Where(x => x != null)));
 
 		public PageBuilder Margin(int? left = null,
 								  int? top = null,

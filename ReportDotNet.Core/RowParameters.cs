@@ -6,6 +6,6 @@ namespace ReportDotNet.Core
 	{
 		public int? Height { get; set; }
 		public RowHeightType HeightType { get; set; }
-		public List<Cell> Cells { get; set; } = new List<Cell>();
+		public List<Cell> Cells { get; } = new List<Cell>();
 	}
 }

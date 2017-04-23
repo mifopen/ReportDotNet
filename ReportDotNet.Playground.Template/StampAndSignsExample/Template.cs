@@ -32,53 +32,66 @@ namespace ReportDotNet.Playground.Template.StampAndSignsExample
 										   Width = 143,
 										   Height = 51
 									   })
-								 .Add(Table(545)
-										  .FontSize(9)
-										  .Add(Row()
-												   .Height(40)
-												   .Add(Cell(data.BossPosition, 280)
-															.Borders(Borders.Bottom)
-															.Alignment(Alignment.Center),
-														Cell(80)
-															.Borders(Borders.Bottom)
-															.Add(Paragraph()
-																	 .Add(new Picture(data.BossSign, 100, 45, offsetX: 10))),
-														Cell(20)
-															.Add(Paragraph()
-																	 .Add(new Picture(data.Stamp, 170, 170,
-																					  offsetX: -100,
-																					  offsetY: 20))),
-														Cell(data.BossName)
-															.Borders(Borders.Bottom)
-															.Alignment(Alignment.Center)
-													   ),
-											   Row(RemarkCell("(position)")
-													   .Width(280),
-												   RemarkCell("(signature)")
-													   .Width(80),
-												   Cell(20),
-												   RemarkCell("(full name)")),
-											   data.HasNoAccountant
-												   ? Row()
-												   : Row()
-													   .Height(40)
-													   .Add(Cell(280),
-															Cell(80)
-																.Add(Paragraph()
-																		 .Add(new Picture(data.AccountantSign, 100, 45, offsetX: 10)))
-																.Borders(Borders.Bottom),
-															Cell(20),
-															Cell(data.AccountantName)
-																.Borders(Borders.Bottom)
-																.Alignment(Alignment.Center)),
-											   data.HasNoAccountant
-												   ? Row()
-												   : Row(Cell(280),
-														 RemarkCell("(signature)")
-															 .Width(80),
-														 Cell(20),
-														 RemarkCell("(full name)"))
-											  )));
+								 .Add(GetPageContent(data)));
+		}
+
+		private static TableBuilder GetPageContent(Data data)
+		{
+			return Table(545)
+				.FontSize(9)
+				.Add(Row()
+						 .Height(40)
+						 .Add(Cell(data.BossPosition, 280)
+								  .Borders(Borders.Bottom)
+								  .Alignment(Alignment.Center),
+							  Cell(80)
+								  .Borders(Borders.Bottom)
+								  .Add(Paragraph()
+										   .Add(Picture(data.BossSign)
+													.MaxWidth(100)
+													.MaxHeight(45)
+													.OffsetX(10))),
+							  Cell(20)
+								  .Add(Paragraph()
+										   .Add(Picture(data.Stamp)
+													.MaxWidth(170)
+													.MaxHeight(170)
+													.OffsetX(-100)
+													.OffsetY(20))),
+							  Cell(data.BossName)
+								  .Borders(Borders.Bottom)
+								  .Alignment(Alignment.Center)
+							 ),
+					 Row(RemarkCell("(position)")
+							 .Width(280),
+						 RemarkCell("(signature)")
+							 .Width(80),
+						 Cell(20),
+						 RemarkCell("(full name)")),
+					 data.HasNoAccountant
+						 ? Row()
+						 : Row()
+							 .Height(40)
+							 .Add(Cell(280),
+								  Cell(80)
+									  .Add(Paragraph()
+											   .Add(Picture(data.AccountantSign)
+														.MaxWidth(100)
+														.MaxHeight(45)
+														.OffsetX(10)))
+									  .Borders(Borders.Bottom),
+								  Cell(20),
+								  Cell(data.AccountantName)
+									  .Borders(Borders.Bottom)
+									  .Alignment(Alignment.Center)),
+					 data.HasNoAccountant
+						 ? Row()
+						 : Row(Cell(280),
+							   RemarkCell("(signature)")
+								   .Width(80),
+							   Cell(20),
+							   RemarkCell("(full name)"))
+					);
 		}
 
 		// Cell style reusing example

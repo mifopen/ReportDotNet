@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 
 namespace ReportDotNet.Core
 {
@@ -13,6 +14,8 @@ namespace ReportDotNet.Core
 		public ParagraphBuilder Add(string text) => Chain(p => p.Parts.Add(new TextPart { Text = text }));
 		public ParagraphBuilder Add(Field field) => Chain(p => p.Parts.Add(new FieldPart { Field = field }));
 		public ParagraphBuilder Add(Picture picture) => Chain(p => p.Parts.Add(new PicturePart { Picture = picture }));
+		public ParagraphBuilder Add(StubPicture stubPicture) => Chain(p => p.Parts.Add(new StubPicturePart { StubPicture = stubPicture }));
+		public ParagraphBuilder BackgroundColor(Color color) => Chain(p => p.BackgroundColor = color);
 
 		public Paragraph Build() => new Paragraph(parameters);
 

@@ -50,6 +50,14 @@ namespace ReportDotNet.Docx
 										 HighAnsi = defaultFont
 									 };
 
+			if (parameters.BackgroundColor.HasValue)
+				runProperties.Shading = new Shading
+										{
+											Val = ShadingPatternValues.Clear,
+											Color = "auto",
+											Fill = parameters.BackgroundColor.Value.ToHex()
+										};
+
 			foreach (var run in parameters.Parts.Select(x => GetRun(document, x, runProperties)))
 				docxParagraph.AppendChild(run);
 			docxParagraph.ParagraphProperties = paragraphProperties;
@@ -86,12 +94,16 @@ namespace ReportDotNet.Docx
 			}
 
 			var picturePart = part as PicturePart;
-			if (picturePart != null)
+			if (picturePart?.Picture?.IsEmpty() == false)
 			{
-				if (picturePart.Picture?.Bytes == null)
-					return run;
-
 				run.AppendChild(picturePart.Picture.Convert(document));
+				return run;
+			}
+
+			var stubPicturePart = part as StubPicturePart;
+			if (stubPicturePart?.StubPicture != null)
+			{
+				run.AppendChild(stubPicturePart.StubPicture.Convert(document));
 				return run;
 			}
 

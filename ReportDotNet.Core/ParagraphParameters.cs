@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 
 namespace ReportDotNet.Core
 {
@@ -9,5 +10,6 @@ namespace ReportDotNet.Core
 		public bool Bold { get; set; }
 		public List<Part> Parts { get; set; } = new List<Part>();
 		public double? SpaceBetweenLines { get; set; }
+		public Color? BackgroundColor { get; set; }
 	}
 }

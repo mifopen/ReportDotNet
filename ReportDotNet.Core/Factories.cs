@@ -17,5 +17,8 @@ namespace ReportDotNet.Core
 
 		public static ParagraphBuilder Paragraph() => new ParagraphBuilder();
 		public static ParagraphBuilder Paragraph(string text) => new ParagraphBuilder().Add(text);
+
+		public static PictureBuilder Picture(byte[] bytes) => new PictureBuilder().Bytes(bytes);
+		public static StubPictureBuilder StubPicture() => new StubPictureBuilder();
 	}
 }

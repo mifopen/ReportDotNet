@@ -13,6 +13,6 @@ namespace ReportDotNet.Core
 		public int? HeaderMargin { get; set; }
 		public PageSize Size { get; set; } = PageSize.A4;
 		public Table Footer { get; set; }
-		public List<IPageElement> Elements = new List<IPageElement>();
+		public readonly List<IPageElement> Elements = new List<IPageElement>();
 	}
 }
