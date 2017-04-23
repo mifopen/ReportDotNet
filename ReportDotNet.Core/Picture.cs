@@ -9,9 +9,6 @@
 			Parameters = parameters;
 		}
 
-		public bool IsEmpty()
-		{
-			return Parameters.Bytes?.Length > 0;
-		}
+		public bool IsEmpty() => Parameters.Bytes == null || Parameters.Bytes.Length == 0;
 	}
 }
