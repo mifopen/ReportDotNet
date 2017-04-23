@@ -25,9 +25,14 @@ namespace ReportDotNet.Docx
 			}
 
 			var spans = Helpers.GetSpans(tableWidths, row.GetWidths());
-			var cells = parameters.Cells.ToArray();
-			for (var i = 0; i < cells.Length; i++)
-				docxRow.AppendChild(cells[i].Convert(document, table, spans[i]));
+			if (parameters.Cells.Count > 0)
+			{
+				var cells = parameters.Cells.ToArray();
+				for (var i = 0; i < cells.Length; i++)
+					docxRow.AppendChild(cells[i].Convert(document, table, spans[i]));
+			}
+			else
+				docxRow.AppendChild(Factories.Cell().Build().Convert(document, table, tableWidths.Sum()));
 
 			return docxRow;
 		}
