@@ -1,6 +1,6 @@
 ﻿namespace ReportDotNet.Core
 {
-	public abstract class Part
-	{
-	}
+    public abstract class Part
+    {
+    }
 }

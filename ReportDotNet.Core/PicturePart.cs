@@ -1,7 +1,7 @@
 ﻿namespace ReportDotNet.Core
 {
-	public class PicturePart: Part
-	{
-		public Picture Picture { get; set; }
-	}
+    public class PicturePart: Part
+    {
+        public Picture Picture { get; set; }
+    }
 }

@@ -1,8 +1,8 @@
 ﻿namespace ReportDotNet.Core
 {
-	public enum PageOrientation
-	{
-		Portrait,
-		Landscape
-	}
+    public enum PageOrientation
+    {
+        Portrait,
+        Landscape
+    }
 }

@@ -1,12 +1,12 @@
 ﻿namespace ReportDotNet.Core
 {
-	public class Cell
-	{
-		public CellParameters Parameters { get; }
+    public class Cell
+    {
+        public CellParameters Parameters { get; }
 
-		public Cell(CellParameters parameters)
-		{
-			Parameters = parameters;
-		}
-	}
+        public Cell(CellParameters parameters)
+        {
+            Parameters = parameters;
+        }
+    }
 }

@@ -1,10 +1,10 @@
 ﻿namespace ReportDotNet.Core
 {
-	public enum Alignment
-	{
-		Left,
-		Center,
-		Right,
-		Both
-	}
+    public enum Alignment
+    {
+        Left,
+        Center,
+        Right,
+        Both
+    }
 }

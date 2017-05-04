@@ -1,6 +1,6 @@
 ﻿namespace ReportDotNet.Core
 {
-	public interface IPageElement
-	{
-	}
+    public interface IPageElement
+    {
+    }
 }

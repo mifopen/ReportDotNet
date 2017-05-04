@@ -1,8 +1,8 @@
 ﻿namespace ReportDotNet.Core
 {
-	public enum RowHeightType
-	{
-		Exact,
-		AtLeast
-	}
+    public enum RowHeightType
+    {
+        Exact,
+        AtLeast
+    }
 }

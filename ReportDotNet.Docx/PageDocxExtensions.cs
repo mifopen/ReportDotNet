@@ -4,111 +4,117 @@ using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using ReportDotNet.Core;
-using Paragraph = ReportDotNet.Core.Paragraph;
+using PageSize = DocumentFormat.OpenXml.Wordprocessing.PageSize;
+using Paragraph = DocumentFormat.OpenXml.Wordprocessing.Paragraph;
 using Table = ReportDotNet.Core.Table;
 
 namespace ReportDotNet.Docx
 {
-	internal static class PageDocxExtensions
-	{
-		public static OpenXmlElement[] Convert(this Page page, IDocument document, WordprocessingDocument wpDocument, bool isLastPage)
-		{
-			var parts = page.Parameters.Elements.Select(p => PartToOpenXmlElement(p, wpDocument));
+    internal static class PageDocxExtensions
+    {
+        public static OpenXmlElement[] Convert(this Page page,
+                                               IDocument document,
+                                               WordprocessingDocument wpDocument,
+                                               bool isLastPage)
+        {
+            var parts = page.Parameters.Elements.Select(p => PartToOpenXmlElement(p, wpDocument));
 
-			if (isLastPage)
-			{
-				FillSectionProperties(wpDocument,
-									  wpDocument.MainDocumentPart.Document.Body.GetSectionProperties(),
-									  page,
-									  document.GetDefaultPageLayout(),
-									  document.GetDefaultFooter());
-				return parts.ToArray();
-			}
+            if (isLastPage)
+            {
+                FillSectionProperties(wpDocument,
+                                      wpDocument.MainDocumentPart.Document.Body.GetSectionProperties(),
+                                      page,
+                                      document.GetDefaultPageLayout(),
+                                      document.GetDefaultFooter());
+                return parts.ToArray();
+            }
 
-			return parts.Concat(new[]
-								{
-									new DocumentFormat.OpenXml.Wordprocessing.Paragraph
-									{
-										ParagraphProperties = new ParagraphProperties
-															  {
-																  SectionProperties = FillSectionProperties(wpDocument,
-																											new SectionProperties(),
-																											page,
-																											document.GetDefaultPageLayout(),
-																											document.GetDefaultFooter())
-															  }
-									}
-								})
-						.ToArray();
-		}
+            return parts.Concat(new[]
+                                {
+                                    new Paragraph
+                                    {
+                                        ParagraphProperties = new ParagraphProperties
+                                                              {
+                                                                  SectionProperties = FillSectionProperties(wpDocument,
+                                                                                                            new SectionProperties(),
+                                                                                                            page,
+                                                                                                            document.GetDefaultPageLayout(),
+                                                                                                            document.GetDefaultFooter())
+                                                              }
+                                    }
+                                })
+                        .ToArray();
+        }
 
-		private static OpenXmlElement PartToOpenXmlElement(IPageElement part, WordprocessingDocument document)
-		{
-			var paragraph = part as Paragraph;
-			if (paragraph != null)
-				return paragraph.Convert(document);
+        private static OpenXmlElement PartToOpenXmlElement(IPageElement part,
+                                                           WordprocessingDocument document)
+        {
+            var paragraph = part as Core.Paragraph;
+            if (paragraph != null)
+                return paragraph.Convert(document);
 
-			var table = part as Table;
-			if (table != null)
-				return table.Convert(document);
+            var table = part as Table;
+            if (table != null)
+                return table.Convert(document);
 
-			throw new InvalidOperationException($"can't convert part of page with type [{part.GetType()}] to OpenXmlElement");
-		}
+            throw new InvalidOperationException($"can't convert part of page with type [{part.GetType()}] to OpenXmlElement");
+        }
 
-		private static SectionProperties FillSectionProperties(WordprocessingDocument wpDocument,
-															   SectionProperties sectionProperties,
-															   Page page,
-															   PageLayout defaultPageLayout,
-															   Table defaultFooter)
-		{
-			var pageOrientation = page.Parameters.Orientation ?? defaultPageLayout.Orientation ?? PageOrientation.Portrait;
+        private static SectionProperties FillSectionProperties(WordprocessingDocument wpDocument,
+                                                               SectionProperties sectionProperties,
+                                                               Page page,
+                                                               PageLayout defaultPageLayout,
+                                                               Table defaultFooter)
+        {
+            var pageOrientation = page.Parameters.Orientation ?? defaultPageLayout.Orientation ?? PageOrientation.Portrait;
 
-			var width = (uint) OpenXmlUnits.FromMmTo20thOfPoint(page.Parameters.Size.Width);
-			var height = (uint) OpenXmlUnits.FromMmTo20thOfPoint(page.Parameters.Size.Height);
-			sectionProperties.AppendChild(new DocumentFormat.OpenXml.Wordprocessing.PageSize
-										  {
-											  Orient = ConvertOrientation(pageOrientation),
-											  Width = pageOrientation == PageOrientation.Portrait ? width : height,
-											  Height = pageOrientation == PageOrientation.Portrait ? height : width
-										  });
-			sectionProperties.AppendChild(new PageMargin
-										  {
-											  Left = (uint?) GetMargin(page.Parameters.MarginLeft, defaultPageLayout.MarginLeft),
-											  Top = GetMargin(page.Parameters.MarginTop, defaultPageLayout.MarginTop),
-											  Right = (uint?) GetMargin(page.Parameters.MarginRight, defaultPageLayout.MarginRight),
-											  Bottom = GetMargin(page.Parameters.MarginBottom, defaultPageLayout.MarginBottom),
-											  Header = (uint?) GetMargin(page.Parameters.HeaderMargin, defaultPageLayout.HeaderMargin),
-											  Footer = (uint?) GetMargin(page.Parameters.FooterMargin, defaultPageLayout.FooterMargin)
-										  });
-			if (page.Parameters.Footer != null || defaultFooter != null)
-			{
-				var footerPart = wpDocument.MainDocumentPart.AddNewPart<FooterPart>();
-				var footerPartId = wpDocument.MainDocumentPart.GetIdOfPart(footerPart);
-				sectionProperties.AppendChild(new FooterReference { Id = footerPartId, Type = HeaderFooterValues.Default });
-				var footer = new Footer((page.Parameters.Footer ?? defaultFooter).Convert(wpDocument));
-				footer.Save(footerPart);
-			}
-			return sectionProperties;
-		}
+            var width = (uint) OpenXmlUnits.FromMmTo20thOfPoint(page.Parameters.Size.Width);
+            var height = (uint) OpenXmlUnits.FromMmTo20thOfPoint(page.Parameters.Size.Height);
+            sectionProperties.AppendChild(new PageSize
+                                          {
+                                              Orient = ConvertOrientation(pageOrientation),
+                                              Width = pageOrientation == PageOrientation.Portrait ? width : height,
+                                              Height = pageOrientation == PageOrientation.Portrait ? height : width
+                                          });
+            sectionProperties.AppendChild(new PageMargin
+                                          {
+                                              Left = (uint?) GetMargin(page.Parameters.MarginLeft, defaultPageLayout.MarginLeft),
+                                              Top = GetMargin(page.Parameters.MarginTop, defaultPageLayout.MarginTop),
+                                              Right = (uint?) GetMargin(page.Parameters.MarginRight, defaultPageLayout.MarginRight),
+                                              Bottom = GetMargin(page.Parameters.MarginBottom, defaultPageLayout.MarginBottom),
+                                              Header = (uint?) GetMargin(page.Parameters.HeaderMargin, defaultPageLayout.HeaderMargin),
+                                              Footer = (uint?) GetMargin(page.Parameters.FooterMargin, defaultPageLayout.FooterMargin)
+                                          });
+            if (page.Parameters.Footer != null || defaultFooter != null)
+            {
+                var footerPart = wpDocument.MainDocumentPart.AddNewPart<FooterPart>();
+                var footerPartId = wpDocument.MainDocumentPart.GetIdOfPart(footerPart);
+                sectionProperties.AppendChild(new FooterReference { Id = footerPartId, Type = HeaderFooterValues.Default });
+                var footer = new Footer((page.Parameters.Footer ?? defaultFooter).Convert(wpDocument));
+                footer.Save(footerPart);
+            }
+            return sectionProperties;
+        }
 
-		private static int? GetMargin(int? fromPage, int? fromDocument)
-		{
-			if (fromPage.HasValue || fromDocument.HasValue)
-				return (fromPage ?? fromDocument)*OpenXmlUnits.Dxa;
-			return null;
-		}
+        private static int? GetMargin(int? fromPage,
+                                      int? fromDocument)
+        {
+            if (fromPage.HasValue || fromDocument.HasValue)
+                return (fromPage ?? fromDocument) * OpenXmlUnits.Dxa;
+            return null;
+        }
 
-		private static PageOrientationValues ConvertOrientation(PageOrientation orientation)
-		{
-			switch (orientation)
-			{
-				case PageOrientation.Portrait:
-					return PageOrientationValues.Portrait;
-				case PageOrientation.Landscape:
-					return PageOrientationValues.Landscape;
-				default:
-					throw new ArgumentOutOfRangeException(nameof(orientation), orientation, null);
-			}
-		}
-	}
+        private static PageOrientationValues ConvertOrientation(PageOrientation orientation)
+        {
+            switch (orientation)
+            {
+                case PageOrientation.Portrait:
+                    return PageOrientationValues.Portrait;
+                case PageOrientation.Landscape:
+                    return PageOrientationValues.Landscape;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(orientation), orientation, null);
+            }
+        }
+    }
 }

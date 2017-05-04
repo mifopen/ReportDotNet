@@ -1,10 +1,10 @@
 ﻿namespace ReportDotNet.Core
 {
-	public enum BorderStyle
-	{
-		Single,
-		Dashed,
-		DotDash,
-		DotDotDash
-	}
+    public enum BorderStyle
+    {
+        Single,
+        Dashed,
+        DotDash,
+        DotDotDash
+    }
 }

@@ -2,8 +2,8 @@
 
 namespace ReportDotNet.Docx
 {
-	public static class CreateExtensions
-	{
-		public static IDocument Docx(this Create _) => new DocxDocument();
-	}
+    public static class CreateExtensions
+    {
+        public static IDocument Docx(this Create _) => new DocxDocument();
+    }
 }

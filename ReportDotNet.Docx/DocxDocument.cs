@@ -9,68 +9,67 @@ using Table = ReportDotNet.Core.Table;
 
 namespace ReportDotNet.Docx
 {
-	internal class DocxDocument: IDocument
-	{
-		private readonly WordprocessingDocument document;
-		private readonly MemoryStream memoryStream;
-		private readonly List<Page> pages = new List<Page>();
-		private PageLayout defaultPageLayout;
-		private Table defaultFooter;
+    internal class DocxDocument: IDocument
+    {
+        private readonly WordprocessingDocument document;
+        private readonly MemoryStream memoryStream;
+        private readonly List<Page> pages = new List<Page>();
+        private PageLayout defaultPageLayout;
+        private Table defaultFooter;
 
-		public DocxDocument()
-		{
-			memoryStream = new MemoryStream();
-			document = WordprocessingDocument.Create(memoryStream, WordprocessingDocumentType.Document);
-			document.AddMainDocumentPart();
-			document.MainDocumentPart.Document = new DocumentFormat.OpenXml.Wordprocessing.Document { Body = new Body() };
-			var stylesPart = document.MainDocumentPart.AddNewPart<StyleDefinitionsPart>();
-			DefaultStyles.Styles.Value.Save(stylesPart);
-			//todo looks ugly
-			SetDefaultPageLayout(new PageLayout
-								 {
-									 Orientation = PageOrientation.Portrait
-								 });
-		}
+        public DocxDocument()
+        {
+            memoryStream = new MemoryStream();
+            document = WordprocessingDocument.Create(memoryStream, WordprocessingDocumentType.Document);
+            document.AddMainDocumentPart();
+            document.MainDocumentPart.Document = new Document { Body = new Body() };
+            var stylesPart = document.MainDocumentPart.AddNewPart<StyleDefinitionsPart>();
+            DefaultStyles.Styles.Value.Save(stylesPart);
+            //todo looks ugly
+            SetDefaultPageLayout(new PageLayout
+                                 {
+                                     Orientation = PageOrientation.Portrait
+                                 });
+        }
 
-		public byte[] Save()
-		{
-			foreach (var page in pages)
-			{
-				var isLastPage = page == pages.Last();
-				document.MainDocumentPart.Document.Body.Append(page.Convert(this, document, isLastPage));
-			}
+        public byte[] Save()
+        {
+            foreach (var page in pages)
+            {
+                var isLastPage = page == pages.Last();
+                document.MainDocumentPart.Document.Body.Append(page.Convert(this, document, isLastPage));
+            }
 
-			using (memoryStream)
-				using (document)
-					document.Close();
-			return memoryStream.ToArray();
-		}
+            using (memoryStream)
+                using (document)
+                    document.Close();
+            return memoryStream.ToArray();
+        }
 
-		public IDocument AddPage(Page page)
-		{
-			pages.Add(page);
-			return this;
-		}
+        public IDocument AddPage(Page page)
+        {
+            pages.Add(page);
+            return this;
+        }
 
-		public void SetDefaultPageLayout(PageLayout pageLayout)
-		{
-			defaultPageLayout = pageLayout;
-		}
+        public void SetDefaultPageLayout(PageLayout pageLayout)
+        {
+            defaultPageLayout = pageLayout;
+        }
 
-		PageLayout IDocument.GetDefaultPageLayout()
-		{
-			return defaultPageLayout;
-		}
+        PageLayout IDocument.GetDefaultPageLayout()
+        {
+            return defaultPageLayout;
+        }
 
-		public void SetDefaultFooter(Table table)
-		{
-			defaultFooter = table;
-			
-		}
+        public void SetDefaultFooter(Table table)
+        {
+            defaultFooter = table;
+        }
 
-		public Table GetDefaultFooter()
-		{
-			return defaultFooter;
-		}
-	}
+        public Table GetDefaultFooter()
+        {
+            return defaultFooter;
+        }
+    }
 }

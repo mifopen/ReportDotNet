@@ -1,9 +1,9 @@
 ﻿namespace ReportDotNet.Core
 {
-	public enum VerticalAlignment
-	{
-		Top,
-		Center,
-		Bottom,
-	}
+    public enum VerticalAlignment
+    {
+        Top,
+        Center,
+        Bottom,
+    }
 }

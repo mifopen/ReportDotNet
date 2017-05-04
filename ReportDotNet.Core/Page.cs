@@ -1,12 +1,12 @@
 ﻿namespace ReportDotNet.Core
 {
-	public class Page
-	{
-		public PageParameters Parameters { get; }
+    public class Page
+    {
+        public PageParameters Parameters { get; }
 
-		public Page(PageParameters parameters)
-		{
-			Parameters = parameters;
-		}
-	}
+        public Page(PageParameters parameters)
+        {
+            Parameters = parameters;
+        }
+    }
 }
