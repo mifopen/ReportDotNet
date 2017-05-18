@@ -43,6 +43,12 @@ namespace ReportDotNet.Web.Controllers
             return File(CachedImages[pageNumber], "image/png");
         }
 
+        [HttpGet]
+        public FileContentResult GetDocx()
+        {
+            var reportData = reportRenderer.Render();
+            return File(reportData.RenderedBytes, "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+        }
 
         private const string cacheKey = "HomeController.CachedImages";
 

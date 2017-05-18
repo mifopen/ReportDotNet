@@ -80,6 +80,11 @@ $(function() {
     const pagePool = new PagePool();
     const $loader = $("#loader");
     const $pages = $("#pages");
+
+    $("#downloadButton").click(() => {
+        window.location.href = "/Home/GetDocx";
+    });
+
     refresh();
 
     function showError(er) {
