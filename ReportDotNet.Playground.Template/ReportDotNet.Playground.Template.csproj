@@ -51,6 +51,17 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="CurrentTemplateDirectory.txt" />
+    <Content Include="SimpleXmlExample\docProps\app.xml" />
+    <Content Include="SimpleXmlExample\docProps\core.xml" />
+    <Content Include="SimpleXmlExample\word\document.xml" />
+    <Content Include="SimpleXmlExample\word\fontTable.xml" />
+    <Content Include="SimpleXmlExample\word\settings.xml" />
+    <Content Include="SimpleXmlExample\word\styles.xml" />
+    <Content Include="SimpleXmlExample\word\theme\theme1.xml" />
+    <Content Include="SimpleXmlExample\word\webSettings.xml" />
+    <Content Include="SimpleXmlExample\word\_rels\document.xml.rels" />
+    <Content Include="SimpleXmlExample\[Content_Types].xml" />
+    <Content Include="SimpleXmlExample\_rels\.rels" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

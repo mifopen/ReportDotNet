@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -8,6 +9,7 @@ using System.Web.Hosting;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using ReportDotNet.Core;
+using ReportDotNet.Docx;
 using ReportDotNet.Playground.Template;
 
 namespace ReportDotNet.Web.App
@@ -21,13 +23,21 @@ namespace ReportDotNet.Web.App
             this.directoryWatcher = directoryWatcher;
         }
 
-        public Report Render(IDocument document)
+        public Report Render()
         {
             var templateProjectDirectory = GetTemplateProjectDirectory();
             var templateDirectoryName = File.ReadAllText(Path.Combine(templateProjectDirectory, "CurrentTemplateDirectory.txt"));
             var templateDirectoryPath = Path.Combine(templateProjectDirectory, templateDirectoryName);
             EnsureTemplateDirectory(templateDirectoryPath, templateDirectoryName, templateProjectDirectory);
+            directoryWatcher.Watch(templateProjectDirectory);
 
+            return File.Exists(Path.Combine(templateDirectoryPath, "Template.cs"))
+                       ? RenderReportDotNetTemplate(templateDirectoryPath)
+                       : RenderUnzipDocx(templateDirectoryPath);
+        }
+
+        private static Report RenderReportDotNetTemplate(string templateDirectoryPath)
+        {
             var templatePath = Path.Combine(templateDirectoryPath, "Template.cs");
             var templateType = CreateTemplateType(templatePath);
             var log = new List<string>();
@@ -35,15 +45,30 @@ namespace ReportDotNet.Web.App
                                                      line,
                                                      obj) => log.Add($"#{lineNumber}: {line}: {obj}");
             var method = GetFillDocumentMethod(templateType);
+            var document = Create.Document.Docx();
             var arguments = method.GetParameters().Length == 2
                                 ? new object[] { document, logAction }
                                 : new object[] { document, logAction, templateDirectoryPath };
             method.Invoke(null, arguments);
-            directoryWatcher.Watch(templateProjectDirectory);
+
             return new Report
                    {
                        Log = log.ToArray(),
                        RenderedBytes = document.Save()
+                   };
+        }
+
+        private static Report RenderUnzipDocx(string templateDirectoryPath)
+        {
+            const string zipFileName = "somefile.docx";
+            File.Delete(zipFileName);
+            ZipFile.CreateFromDirectory(templateDirectoryPath, zipFileName);
+            var zipBytes = File.ReadAllBytes(zipFileName);
+            File.Delete(zipFileName);
+            return new Report
+                   {
+                       Log = new string[0],
+                       RenderedBytes = zipBytes
                    };
         }
 

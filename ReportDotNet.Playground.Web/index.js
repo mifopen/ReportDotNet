@@ -84,8 +84,9 @@ $(function() {
 
     function showError(er) {
         $loader.hide();
-        $("#error_iframe").show();
-        $("#error_iframe")[0].src = `data:text/html;charset=utf-8,${escape(er.responseText)}`;
+        const iframe = $("#error_iframe");
+        iframe.show();
+        iframe[0].src = `data:text/html;charset=utf-8,${escape(er.responseText)}`;
     }
 
     function refresh() {

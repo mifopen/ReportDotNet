@@ -1,7 +1,4 @@
-﻿using System;
-using System.Web.Mvc;
-using ReportDotNet.Core;
-using ReportDotNet.Docx;
+﻿using System.Web.Mvc;
 using ReportDotNet.Web.App;
 
 namespace ReportDotNet.Web.Controllers
@@ -30,35 +27,20 @@ namespace ReportDotNet.Web.Controllers
         [HttpGet]
         public JsonResult Render()
         {
-            try
-            {
-                var document = Create.Document.Docx();
-                var reportData = reportRenderer.Render(document);
-                var pdf = wordToPdfConverter.Convert(reportData.RenderedBytes);
-                CachedImages = pdfToPngConverter.Convert(pdf);
-                return Json(new
-                            {
-                                Log = string.Join("<br>", reportData.Log),
-                                PagesCount = CachedImages.Length
-                            }, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
+            var reportData = reportRenderer.Render();
+            var pdf = wordToPdfConverter.Convert(reportData.RenderedBytes);
+            CachedImages = pdfToPngConverter.Convert(pdf);
+            return Json(new
+                        {
+                            Log = string.Join("<br>", reportData.Log),
+                            PagesCount = CachedImages.Length
+                        }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
         public FileContentResult GetPage(int pageNumber)
         {
-            try
-            {
-                return File(CachedImages[pageNumber], "image/png");
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
+            return File(CachedImages[pageNumber], "image/png");
         }
 
 
