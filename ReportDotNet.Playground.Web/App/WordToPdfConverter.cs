@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 using Microsoft.Office.Interop.Word;
 
 namespace ReportDotNet.Web.App
 {
     public class WordToPdfConverter
     {
-        private readonly Lazy<Application> application = new Lazy<Application>(() => new Application());
+        private Application application;
 
         public byte[] Convert(byte[] source)
         {
@@ -32,7 +33,7 @@ namespace ReportDotNet.Web.App
         {
             try
             {
-                if (application.IsValueCreated)
+                if (application != null)
                     return;
 
                 foreach (var p in Process.GetProcessesByName("winword"))
@@ -51,10 +52,10 @@ namespace ReportDotNet.Web.App
                                      string outputFile)
         {
             object oSource = inputFile;
-            _Document document = application.Value.Documents.Open(ref oSource);
-
+            var document = GetDocuments().Open(ref oSource);
             if (document == null)
                 throw new FileNotFoundException("incorrect input filename", inputFile);
+
             try
             {
                 document.ActiveWindow.View.Type = WdViewType.wdNormalView;
@@ -66,6 +67,24 @@ namespace ReportDotNet.Web.App
             {
                 object saveChanges = WdSaveOptions.wdDoNotSaveChanges;
                 document.Close(ref saveChanges);
+            }
+        }
+
+        private Documents GetDocuments()
+        {
+            lock (this)
+            {
+                try
+                {
+                    if (application == null)
+                        application = new Application();
+                    return application.Documents;
+                }
+                catch (COMException e) when (e.Message.Contains("The RPC server is unavailable"))
+                {
+                    application = new Application();
+                    return application.Documents;
+                }
             }
         }
     }
