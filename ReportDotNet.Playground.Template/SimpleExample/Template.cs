@@ -1,76 +1,90 @@
 ﻿using System;
-using System.Drawing;
+using System.Linq;
 using ReportDotNet.Core;
 using static ReportDotNet.Core.Factories;
 
 namespace ReportDotNet.Playground.Template.SimpleExample
 {
-    public static class Template
-    {
-        public static void FillDocument(IDocument document,
-                                        Action<object> log)
-        {
-            var footer = Table(300)
-                .Add(Row(Cell()
-                             .Add(Paragraph()
-                                      .Add(Field.PageNumber)
-                                      .Add(" / ")
-                                      .Add(Field.PageCount))));
-            document.AddPage(Page()
-                                 .Orientation(PageOrientation.Portrait)
-                                 .Footer(footer)
-                                 .Add(Paragraph("This is the first paragraph on the first page"),
-                                      Paragraph("\\n in text will add new line \n just like that"),
-                                      Paragraph("Text with right alignment")
-                                          .Alignment(Alignment.Right),
-                                      Paragraph("Bold 14pt with background color")
-                                          .Bold()
-                                          .BackgroundColor(Color.Aqua)
-                                          .FontSize(14),
-                                      Paragraph("Let's add another page and play with tables")));
+	public class Data
+	{
+		public CashBookLine[] CashBookLines { get; set; }
+	}
 
-            var page = Page()
-                .Orientation(PageOrientation.Landscape)
-                .Footer(footer)
-                .Add(Table(400)
-                         .Borders(Borders.All)
-                         .Add(Row(Cell("1,1", 200)
-                                      .Alignment(Alignment.Right),
-                                  Cell("1,2", 200)
-                                      .BorderSize(3)),
-                              Row(Cell("2,1", 200)
-                                      .BackgroundColor(Color.Aqua),
-                                  Cell("2,2", 100)
-                                      .MergeDown()
-                                      .Alignment(Alignment.Center)
-                                      .VerticalAlignment(VerticalAlignment.Center)
-                                      .TextDirection(TextDirection.RightLeft_TopBottom)),
-                              Row(Cell("3,1", 200),
-                                  Cell("3,2", 100)
-                                      .MergeUp())));
+	public class CashBookLine
+	{
+		public string ContractorName { get; set; }
+		public string DocumentNumber { get; set; }
+		public string Expense { get; set; }
+		public string Income { get; set; }
+		public string DayTotalIncome { get; set; }
+		public string DayTotalExpense { get; set; }
+		public string BeginOfTheDaySum { get; set; }
+		public string EndOfTheDaySum { get; set; }
+		public string IncomeDocumentsCount { get; set; }
+		public string ExpenseDocumentsCount { get; set; }
+		public string SalaryPart { get; set; }
+		public string PageNumber { get; set; }
+		public DateTime Date { get; set; }
+		public string CorrespondingAccount { get; set; }
+	}
 
-            page.Add(Paragraph());
+	public static class Template
+	{
+		public static void FillDocument(IDocument document,
+										Action<object> log)
+		{
+			var data = new Data
+					   {
+						   CashBookLines = new[]
+										   {
+											   new CashBookLine
+											   {
+												   Date = new DateTime(2017, 1, 1),
+												   ContractorName = "some name",
+												   BeginOfTheDaySum = "123",
+												   CorrespondingAccount = "asdf",
+												   DayTotalExpense = "123",
+												   DayTotalIncome = "123",
+												   DocumentNumber = "2",
+												   EndOfTheDaySum = "234",
+												   Expense = "23",
+												   ExpenseDocumentsCount = "2",
+												   Income = "23",
+												   IncomeDocumentsCount = "4",
+												   PageNumber = "2",
+												   SalaryPart = "32"
+											   }
+										   }
+					   };
+			var linesGroupedByPages = data.CashBookLines
+										  .GroupBy(x => x.PageNumber)
+										  .OrderBy(x => int.Parse(x.Key));
+			foreach (var pageLines in linesGroupedByPages)
+				document.AddPage(GetCashBookPage(pageLines.Key, pageLines.ToArray()));
+		}
 
-            var table = Table(700)
-                .Borders(Borders.Top | Borders.Bottom);
-            for (var i = 16; i < 100; i += 10)
-                table.Add(Row(i)
-                              .HeightType(RowHeightType.Exact)
-                              .Add(Cell($"row with height = {i}")
-                                       .VerticalAlignment(VerticalAlignment.Center)));
-
-            page.Add(table);
-
-            page.Add(Paragraph()
-                         .Add(StubPicture()
-                                  .MaxWidth(200)
-                                  .MaxHeight(100)
-                                  .Color(Color.Brown)));
-
-            document.AddPage(page);
-
-            var variableName = "Some log text";
-            log(variableName);
-        }
-    }
+		private static Page GetCashBookPage(string pageNumber,
+											CashBookLine[] lines)
+		{
+			var firstLine = lines.First();
+			var widths = new int?[] { 75, null, 100, 100, 100 };
+			return Page()
+				.Orientation(PageOrientation.Portrait)
+				.Margin(left: 100)
+				.Add(Table(600)
+						 .FontSize(10)
+						 .Add(Row(Cell("Касса за", widths[0])
+									  .Alignment(Alignment.Right),
+								  Cell(firstLine.Date.ToString("dd.MM.yyyy"), 100)
+									  .Borders(Borders.Bottom)
+									  .Alignment(Alignment.Center),
+								  Cell("г.", 30),
+								  Cell("Лист")
+									  .Alignment(Alignment.Right),
+								  Cell(pageNumber, widths[4])
+									  .Alignment(Alignment.Center)
+									  .Borders(Borders.Bottom)),
+							  Row()));
+		}
+	}
 }

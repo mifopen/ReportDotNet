@@ -41,18 +41,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CreateExtensions.cs" />
-    <Compile Include="CellDocxExtensions.cs" />
+    <Compile Include="Converters\CellConverter.cs" />
     <Compile Include="DefaultStyles.cs" />
     <Compile Include="DocxDocument.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="FillRectangleOffsetsCalculator.cs" />
     <Compile Include="Offsets.cs" />
     <Compile Include="OpenXmlUnits.cs" />
-    <Compile Include="PageDocxExtensions.cs" />
-    <Compile Include="ParagraphDocxExtensions.cs" />
-    <Compile Include="PictureDocxExtensions.cs" />
-    <Compile Include="RowDocxExtensions.cs" />
-    <Compile Include="TableDocxExtensions.cs" />
+    <Compile Include="Converters\PageConverter.cs" />
+    <Compile Include="Converters\ParagraphConverter.cs" />
+    <Compile Include="Converters\PictureConverter.cs" />
+    <Compile Include="Converters\RowConverter.cs" />
+    <Compile Include="Converters\TableConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

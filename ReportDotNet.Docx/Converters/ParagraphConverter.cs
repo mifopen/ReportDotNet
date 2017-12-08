@@ -7,11 +7,11 @@ using ReportDotNet.Core;
 using FontFamily = System.Drawing.FontFamily;
 using Paragraph = ReportDotNet.Core.Paragraph;
 
-namespace ReportDotNet.Docx
+namespace ReportDotNet.Docx.Converters
 {
-    internal static class ParagraphDocxExtensions
+    internal static class ParagraphConverter
     {
-        public static OpenXmlElement Convert(this Paragraph paragraph,
+        public static OpenXmlElement Convert(Paragraph paragraph,
                                              WordprocessingDocument document,
                                              int? defaultFontSize = null)
         {
@@ -101,7 +101,7 @@ namespace ReportDotNet.Docx
             if (picturePart != null)
             {
                 if (picturePart.Picture?.IsEmpty() == false)
-                    run.AppendChild(picturePart.Picture.Convert(document));
+                    run.AppendChild(PictureConverter.Convert(picturePart.Picture, document));
                 return run;
             }
 
@@ -109,7 +109,7 @@ namespace ReportDotNet.Docx
             if (stubPicturePart != null)
             {
                 if (stubPicturePart.StubPicture != null)
-                    run.AppendChild(stubPicturePart.StubPicture.Convert(document));
+                    run.AppendChild(PictureConverter.Convert(stubPicturePart.StubPicture, document));
                 return run;
             }
 

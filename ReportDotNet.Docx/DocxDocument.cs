@@ -5,6 +5,7 @@ using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using ReportDotNet.Core;
+using ReportDotNet.Docx.Converters;
 using Table = ReportDotNet.Core.Table;
 
 namespace ReportDotNet.Docx
@@ -37,7 +38,7 @@ namespace ReportDotNet.Docx
             foreach (var page in pages)
             {
                 var isLastPage = page == pages.Last();
-                document.MainDocumentPart.Document.Body.Append(page.Convert(this, document, isLastPage));
+                document.MainDocumentPart.Document.Body.Append(PageConverter.Convert(page, this, document, isLastPage));
             }
 
             using (memoryStream)

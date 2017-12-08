@@ -6,11 +6,11 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using ReportDotNet.Core;
 using Table = ReportDotNet.Core.Table;
 
-namespace ReportDotNet.Docx
+namespace ReportDotNet.Docx.Converters
 {
-    internal static class RowDocxExtensions
+    internal static class RowConverter
     {
-        public static TableRow Convert(this Row row,
+        public static TableRow Convert(Row row,
                                        WordprocessingDocument document,
                                        Table table,
                                        int[] tableWidths)
@@ -32,10 +32,10 @@ namespace ReportDotNet.Docx
             {
                 var cells = parameters.Cells.ToArray();
                 for (var i = 0; i < cells.Length; i++)
-                    docxRow.AppendChild(cells[i].Convert(document, table, spans[i]));
+                    docxRow.AppendChild(CellConverter.Convert(cells[i], document, table, spans[i]));
             }
             else
-                docxRow.AppendChild(Factories.Cell().Build().Convert(document, table, tableWidths.Sum()));
+                docxRow.AppendChild(CellConverter.Convert(Factories.Cell().Build(), document, table, tableWidths.Sum()));
 
             return docxRow;
         }

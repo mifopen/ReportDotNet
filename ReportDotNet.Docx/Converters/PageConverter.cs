@@ -8,11 +8,11 @@ using PageSize = DocumentFormat.OpenXml.Wordprocessing.PageSize;
 using Paragraph = DocumentFormat.OpenXml.Wordprocessing.Paragraph;
 using Table = ReportDotNet.Core.Table;
 
-namespace ReportDotNet.Docx
+namespace ReportDotNet.Docx.Converters
 {
-    internal static class PageDocxExtensions
+    internal static class PageConverter
     {
-        public static OpenXmlElement[] Convert(this Page page,
+        public static OpenXmlElement[] Convert(Page page,
                                                IDocument document,
                                                WordprocessingDocument wpDocument,
                                                bool isLastPage)
@@ -51,11 +51,11 @@ namespace ReportDotNet.Docx
         {
             var paragraph = part as Core.Paragraph;
             if (paragraph != null)
-                return paragraph.Convert(document);
+                return ParagraphConverter.Convert(paragraph, document);
 
             var table = part as Table;
             if (table != null)
-                return table.Convert(document);
+                return TableConverter.Convert(table, document);
 
             throw new InvalidOperationException($"can't convert part of page with type [{part.GetType()}] to OpenXmlElement");
         }
@@ -90,7 +90,7 @@ namespace ReportDotNet.Docx
                 var footerPart = wpDocument.MainDocumentPart.AddNewPart<FooterPart>();
                 var footerPartId = wpDocument.MainDocumentPart.GetIdOfPart(footerPart);
                 sectionProperties.AppendChild(new FooterReference { Id = footerPartId, Type = HeaderFooterValues.Default });
-                var footer = new Footer((page.Parameters.Footer ?? defaultFooter).Convert(wpDocument));
+                var footer = new Footer(TableConverter.Convert(page.Parameters.Footer ?? defaultFooter, wpDocument));
                 footer.Save(footerPart);
             }
             return sectionProperties;

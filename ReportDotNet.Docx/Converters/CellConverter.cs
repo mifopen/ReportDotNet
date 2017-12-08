@@ -6,11 +6,11 @@ using Color = System.Drawing.Color;
 using Table = ReportDotNet.Core.Table;
 using TextDirection = ReportDotNet.Core.TextDirection;
 
-namespace ReportDotNet.Docx
+namespace ReportDotNet.Docx.Converters
 {
-    internal static class CellDocxExtensions
+    internal static class CellConverter
     {
-        public static TableCell Convert(this Cell cell,
+        public static TableCell Convert(Cell cell,
                                         WordprocessingDocument document,
                                         Table table,
                                         int span)
@@ -63,7 +63,7 @@ namespace ReportDotNet.Docx
                                              Val = ShadingPatternValues.Solid
                                          };
 
-            tableCell.AppendChild(parameters.Paragraph.Convert(document, table.Parameters.FontSize));
+            tableCell.AppendChild(ParagraphConverter.Convert(parameters.Paragraph, document, table.Parameters.FontSize));
 
             tableCell.TableCellProperties = cellProperties;
             return tableCell;

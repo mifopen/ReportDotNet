@@ -5,18 +5,18 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using ReportDotNet.Core;
 using Table = ReportDotNet.Core.Table;
 
-namespace ReportDotNet.Docx
+namespace ReportDotNet.Docx.Converters
 {
-    internal static class TableDocxExtensions
+    internal static class TableConverter
     {
-        public static OpenXmlElement Convert(this Table table,
+        public static OpenXmlElement Convert(Table table,
                                              WordprocessingDocument document)
         {
             var parameters = table.Parameters;
             var widths = Helpers.GetWidths(parameters.Width, parameters.Rows.Select(x => x.GetWidths()));
             var docxTable = CreateTable(parameters.Width, widths);
             foreach (var row in parameters.Rows)
-                docxTable.AppendChild(row.Convert(document, table, widths));
+                docxTable.AppendChild(RowConverter.Convert(row, document, table, widths));
             return docxTable;
         }
 

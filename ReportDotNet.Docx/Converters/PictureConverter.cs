@@ -17,11 +17,11 @@ using Picture = ReportDotNet.Core.Picture;
 using ShapeProperties = DocumentFormat.OpenXml.Drawing.Pictures.ShapeProperties;
 using VerticalAlignment = DocumentFormat.OpenXml.Drawing.Wordprocessing.VerticalAlignment;
 
-namespace ReportDotNet.Docx
+namespace ReportDotNet.Docx.Converters
 {
-    internal static class PictureDocxExtensions
+    internal static class PictureConverter
     {
-        internal static OpenXmlElement Convert(this StubPicture picture,
+        internal static OpenXmlElement Convert(StubPicture picture,
                                                WordprocessingDocument document)
         {
             return Convert(picture.Parameters.Bytes,
@@ -34,7 +34,7 @@ namespace ReportDotNet.Docx
                            document);
         }
 
-        internal static OpenXmlElement Convert(this Picture picture,
+        internal static OpenXmlElement Convert(Picture picture,
                                                WordprocessingDocument document)
         {
             return Convert(picture.Parameters.Bytes,
