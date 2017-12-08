@@ -1,1 +1,1 @@
-﻿SimpleXmlExample
+﻿SimpleExample
