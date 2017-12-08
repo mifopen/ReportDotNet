@@ -15,10 +15,10 @@ namespace ReportDotNet.Core
 
         public int[] GetWidths()
         {
-            if (Parameters.Cells.Count(c => c.Parameters.Width == null) > 1)
+            if (Parameters.GetCells().Count(c => c.Parameters.Width == null) > 1)
                 throw new InvalidOperationException("Multiple cells with relative width in one row aren't supported");
-            var relativeCellWidth = Table.Parameters.Width - Parameters.Cells.Sum(c => c.Parameters.Width ?? 0);
-            return Parameters.Cells.Select(x => x.Parameters.Width ?? relativeCellWidth).ToArray();
+            var relativeCellWidth = Table.Parameters.Width - Parameters.GetCells().Sum(c => c.Parameters.Width ?? 0);
+            return Parameters.GetCells().Select(x => x.Parameters.Width ?? relativeCellWidth).ToArray();
         }
     }
 }

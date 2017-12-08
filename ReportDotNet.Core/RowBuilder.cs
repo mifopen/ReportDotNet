@@ -12,10 +12,10 @@ namespace ReportDotNet.Core
         public RowBuilder HeightType(RowHeightType heightType) => Chain(p => p.HeightType = heightType);
 
         public RowBuilder Add(params Cell[] cells) =>
-            Chain(p => p.Cells.AddRange(cells.Where(x => x != null)));
+            Chain(p => p.AddCells(cells.Where(x => x != null)));
 
         public RowBuilder Add(IEnumerable<Cell> cells) =>
-            Chain(p => p.Cells.AddRange(cells.Where(x => x != null)));
+            Chain(p => p.AddCells(cells.Where(x => x != null)));
 
         public Row Build() => new Row(parameters);
 

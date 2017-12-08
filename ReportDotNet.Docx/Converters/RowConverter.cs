@@ -28,9 +28,9 @@ namespace ReportDotNet.Docx.Converters
             }
 
             var spans = Helpers.GetSpans(tableWidths, row.GetWidths());
-            if (parameters.Cells.Count > 0)
+            if (parameters.GetCells().Any())
             {
-                var cells = parameters.Cells.ToArray();
+                var cells = parameters.GetCells().ToArray();
                 for (var i = 0; i < cells.Length; i++)
                     docxRow.AppendChild(CellConverter.Convert(cells[i], document, table, spans[i]));
             }
