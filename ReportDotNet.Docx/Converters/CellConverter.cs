@@ -27,7 +27,10 @@ namespace ReportDotNet.Docx.Converters
                                                             Val = GetVerticalAlignment(parameters.VerticalAlignment ?? VerticalAlignment.Bottom)
                                                         };
 
-            cellProperties.TableCellMargin = GetMargin(parameters.MarginLeft ?? table.Parameters.CellMarginLeft, parameters.MarginRight ?? table.Parameters.CellMarginRight);
+            cellProperties.TableCellMargin = GetMargin(parameters.MarginLeft ?? table.Parameters.CellMarginLeft,
+                                                       parameters.MarginRight ?? table.Parameters.CellMarginRight,
+                                                       parameters.MarginTop ?? table.Parameters.CellMarginTop,
+                                                       parameters.MarginBottom ?? table.Parameters.CellMarginBottom);
 
             if (parameters.MergeDown)
                 cellProperties.VerticalMerge = new VerticalMerge { Val = MergedCellValues.Restart };
@@ -115,10 +118,13 @@ namespace ReportDotNet.Docx.Converters
         }
 
         private static TableCellMargin GetMargin(int? left,
-                                                 int? right)
+                                                 int? right,
+                                                 int? top,
+                                                 int? bottom)
         {
-            if (left == null && right == null)
+            if (left == null && right == null && top == null && bottom == null)
                 return null;
+            
             return new TableCellMargin
                    {
                        LeftMargin = left.HasValue
@@ -134,7 +140,21 @@ namespace ReportDotNet.Docx.Converters
                                                Width = (right * OpenXmlUnits.Dxa).ToString(),
                                                Type = TableWidthUnitValues.Dxa
                                            }
-                                         : null
+                                         : null,
+                       TopMargin = top.HasValue
+                                       ? new TopMargin
+                                         {
+                                             Width = (top * OpenXmlUnits.Dxa).ToString(),
+                                             Type = TableWidthUnitValues.Dxa
+                                         }
+                                       : null,
+                       BottomMargin = bottom.HasValue
+                                          ? new BottomMargin
+                                            {
+                                                Width = (bottom * OpenXmlUnits.Dxa).ToString(),
+                                                Type = TableWidthUnitValues.Dxa
+                                            }
+                                          : null
                    };
         }
 

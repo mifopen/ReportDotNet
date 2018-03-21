@@ -11,10 +11,14 @@ namespace ReportDotNet.Core
         public TableBuilder FontSize(int fontSize) => Chain(p => p.FontSize = fontSize);
 
         public TableBuilder CellMargin(int? left = null,
-                                       int? right = null) => Chain(p =>
+                                       int? right = null,
+                                       int? top = null,
+                                       int? bottom = null) => Chain(p =>
                                                                    {
                                                                        p.CellMarginLeft = left;
                                                                        p.CellMarginRight = right;
+                                                                       p.CellMarginTop = top;
+                                                                       p.CellMarginBottom = bottom;
                                                                    });
 
         public TableBuilder Width(int width) => Chain(p => p.Width = width);
