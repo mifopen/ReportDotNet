@@ -29,10 +29,15 @@ namespace ReportDotNet.Core
         public CellBuilder BorderSize(int borderSize) => Chain(p => p.BorderSize = borderSize);
 
         public CellBuilder Margin(int? left = null,
-                                  int? right = null) => Chain(p =>
+                                  int? right = null,
+                                  int? top = null,
+                                  int? bottom = null) => Chain(p =>
                                                               {
                                                                   p.MarginLeft = left;
                                                                   p.MarginRight = right;
+                                                                  p.MarginTop = top;
+                                                                  p.MarginBottom = bottom;
+                                                                  
                                                               });
 
 
