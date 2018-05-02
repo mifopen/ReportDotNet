@@ -1,4 +1,41 @@
-﻿class Page {
+﻿$(function () {
+    $.connection.hub.logging = true;
+    $.connection.reportHub.client.reportUpdated = refresh;
+    $.connection.hub.start();
+    const pagePool = new PagePool();
+    const $loader = $("#loader");
+    const $pages = $("#pages");
+
+    $("#downloadButton").click(() => {
+        window.location.href = "/Home/GetDocx";
+    });
+
+    refresh();
+
+    function showError(er) {
+        $loader.hide();
+        const iframe = $("#error_iframe");
+        iframe.show();
+        iframe[0].src = `data:text/html;charset=utf-8,${escape(er.responseText)}`;
+    }
+
+    function refresh() {
+        $("#error_iframe").hide();
+        $.getJSON("/Home/Render")
+            .done(res => {
+                $("#log").html(res.Log);
+                const pages = pagePool.acquire(res.PagesCount);
+                for (let i = 0; i < res.PagesCount; i++)
+                    pages[i].setImageSrc(`/Home/GetPage?pageNumber=${i}&hash=${Date.now()}`);
+                $pages.show();
+                $loader.hide();
+            })
+            .fail(showError)
+            .always(() => $("#time").html(new Date().toLocaleTimeString()));
+    }
+});
+
+class Page {
     constructor($html) {
         this.normalPageWidth = 500;
         this.zoomedPageWidth = 1100;
@@ -72,40 +109,3 @@ class PagePool {
         return $result;
     }
 }
-
-$(function() {
-    $.connection.hub.logging = true;
-    $.connection.reportHub.client.reportUpdated = refresh;
-    $.connection.hub.start();
-    const pagePool = new PagePool();
-    const $loader = $("#loader");
-    const $pages = $("#pages");
-
-    $("#downloadButton").click(() => {
-        window.location.href = "/Home/GetDocx";
-    });
-
-    refresh();
-
-    function showError(er) {
-        $loader.hide();
-        const iframe = $("#error_iframe");
-        iframe.show();
-        iframe[0].src = `data:text/html;charset=utf-8,${escape(er.responseText)}`;
-    }
-
-    function refresh() {
-        $("#error_iframe").hide();
-        $.getJSON("/Home/Render")
-            .done(res => {
-                $("#log").html(res.Log);
-                const pages = pagePool.acquire(res.PagesCount);
-                for (let i = 0; i < res.PagesCount; i++)
-                    pages[i].setImageSrc(`/Home/GetPage?pageNumber=${i}&hash=${Date.now()}`);
-                $pages.show();
-                $loader.hide();
-            })
-            .fail(showError)
-            .always(() => $("#time").html(new Date().toLocaleTimeString()));
-    }
-});

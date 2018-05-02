@@ -37,3 +37,12 @@
     color: white;
     font: 15pt monospace;
 }
+
+.header{
+    font: 18pt monospace;
+    font-weight: bold;
+}
+
+.section{
+    margin-bottom: 10px;
+}

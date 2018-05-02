@@ -5,7 +5,6 @@ using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using System.Web.Hosting;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using ReportDotNet.Core;
@@ -16,27 +15,14 @@ namespace ReportDotNet.Web.App
 {
     public class ReportRenderer
     {
-        private readonly DirectoryWatcher directoryWatcher;
-
-        public ReportRenderer(DirectoryWatcher directoryWatcher)
+        public RenderedReport Render(string templateDirectoryPath)
         {
-            this.directoryWatcher = directoryWatcher;
-        }
-
-        public Report Render()
-        {
-            var templateProjectDirectory = GetTemplateProjectDirectory();
-            var templateDirectoryName = File.ReadAllText(Path.Combine(templateProjectDirectory, "CurrentTemplateDirectory.txt"));
-            var templateDirectoryPath = Path.Combine(templateProjectDirectory, templateDirectoryName);
-            EnsureTemplateDirectory(templateDirectoryPath, templateDirectoryName, templateProjectDirectory);
-            directoryWatcher.Watch(templateProjectDirectory);
-
             return File.Exists(Path.Combine(templateDirectoryPath, "Template.cs"))
                        ? RenderReportDotNetTemplate(templateDirectoryPath)
-                       : RenderUnzipDocx(templateDirectoryPath);
+                       : RenderUnzipedDocx(templateDirectoryPath);
         }
 
-        private static Report RenderReportDotNetTemplate(string templateDirectoryPath)
+        private static RenderedReport RenderReportDotNetTemplate(string templateDirectoryPath)
         {
             var templatePath = Path.Combine(templateDirectoryPath, "Template.cs");
             var templateType = CreateTemplateType(templatePath);
@@ -51,40 +37,25 @@ namespace ReportDotNet.Web.App
                                 : new object[] { document, logAction, templateDirectoryPath };
             method.Invoke(null, arguments);
 
-            return new Report
+            return new RenderedReport
                    {
                        Log = log.ToArray(),
-                       RenderedBytes = document.Save()
+                       Bytes = document.Save()
                    };
         }
 
-        private static Report RenderUnzipDocx(string templateDirectoryPath)
+        private static RenderedReport RenderUnzipedDocx(string templateDirectoryPath)
         {
             const string zipFileName = "somefile.docx";
             File.Delete(zipFileName);
             ZipFile.CreateFromDirectory(templateDirectoryPath, zipFileName);
             var zipBytes = File.ReadAllBytes(zipFileName);
             File.Delete(zipFileName);
-            return new Report
+            return new RenderedReport
                    {
                        Log = new string[0],
-                       RenderedBytes = zipBytes
+                       Bytes = zipBytes
                    };
-        }
-
-        private static void EnsureTemplateDirectory(string templateDirectoryPath,
-                                                    string templateDirectoryName,
-                                                    string templateProjectDirectory)
-        {
-            if (!Directory.Exists(templateDirectoryPath))
-            {
-                var directories = new DirectoryInfo(templateProjectDirectory)
-                    .EnumerateDirectories()
-                    .Select(x => x.Name)
-                    .Except(new[] { "bin", "obj", "Properties" });
-                throw new Exception($"Are you sure that directory {templateDirectoryName} exists in template project?" +
-                                    $" There are only {string.Join(", ", directories)}.");
-            }
         }
 
         private static Type CreateTemplateType(string templatePath)
@@ -127,13 +98,6 @@ namespace ReportDotNet.Web.App
             }
         }
 
-        private static string GetTemplateProjectDirectory()
-        {
-            var webProjectPath = HostingEnvironment.ApplicationPhysicalPath;
-            var solutionPath = Path.Combine(webProjectPath, "..");
-            return Path.Combine(solutionPath, typeof(StubForNamespace).Namespace);
-        }
-
         private static MethodInfo GetFillDocumentMethod(Type type)
         {
             return type.GetMethods()
@@ -163,9 +127,9 @@ namespace ReportDotNet.Web.App
             return CSharpSyntaxTree.ParseText(string.Join(Environment.NewLine, lines));
         }
 
-        public class Report
+        public class RenderedReport
         {
-            public byte[] RenderedBytes { get; set; }
+            public byte[] Bytes { get; set; }
             public string[] Log { get; set; }
         }
     }

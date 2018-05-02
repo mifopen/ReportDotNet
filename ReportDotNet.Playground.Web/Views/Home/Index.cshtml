@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>print em all</title>
+    <title>print 'em all</title>
     <meta charset="utf-8"/>
     <link href="/index.css" rel="stylesheet"/>
 </head>
@@ -27,27 +27,27 @@
     <div id="pages" class="pages"></div>
 
     <div>
-        <div>
+        <div class="section">
             <div class="text">
-                <div>Log:</div>
+                <div class="header">Log</div>
                 <span id="log"></span>
             </div>
 
         </div>
-        <div>
+        <div class="section">
             <span class="text">
-                Time:
+                <div class="header">Timestamp</div>
                 <span id="time"></span>
             </span>
         </div>
-        <div>
+        <div class="section">
             <button id="downloadButton">Download .docx</button>
         </div>
     </div>
 </div>
 
 <div id="pageWrapTemplate" class="pageWrap" style="display: none;">
-    <img class="page" alt="page"/>
+    <img class="page" title="click to zoom" alt="page"/>
     <span class="pageNumber"></span>
 </div>
 
