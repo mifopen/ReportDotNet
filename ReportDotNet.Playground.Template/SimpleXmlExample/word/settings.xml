@@ -3,8 +3,7 @@
             xmlns:o="urn:schemas-microsoft-com:office:office"
             xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:v="urn:schemas-microsoft-com:vml"
             xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
-            xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml"
-            mc:Ignorable="w14 w15">
+            xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml">
     <w:zoom w:percent="100"/>
     <w:defaultTabStop w:val="708"/>
     <w:characterSpacingControl w:val="doNotCompress"/>
