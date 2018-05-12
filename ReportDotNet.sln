@@ -5,11 +5,9 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportDotNet.Core", "ReportDotNet.Core\ReportDotNet.Core.csproj", "{3BE01964-7B8B-40E1-9BC1-8FA13AB274AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportDotNet.Playground.Web", "ReportDotNet.Playground.Web\ReportDotNet.Playground.Web.csproj", "{C32C259C-D310-4314-96AF-3FCC4E742DDC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportDotNet.Web", "ReportDotNet.Web\ReportDotNet.Web.csproj", "{C32C259C-D310-4314-96AF-3FCC4E742DDC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportDotNet.Docx", "ReportDotNet.Docx\ReportDotNet.Docx.csproj", "{4D668235-EDD3-4C25-9CA7-59878E3D4FFB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportDotNet.Playground.Template", "ReportDotNet.Playground.Template\ReportDotNet.Playground.Template.csproj", "{12A9E74D-CCA7-41FD-B8EA-F308FDC943A2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportDotNet.Core.Tests", "ReportDotNet.Core.Tests\ReportDotNet.Core.Tests.csproj", "{92207667-DC9F-4DE8-954D-0067839B89CD}"
 EndProject
@@ -31,10 +29,6 @@ Global
 		{4D668235-EDD3-4C25-9CA7-59878E3D4FFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D668235-EDD3-4C25-9CA7-59878E3D4FFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4D668235-EDD3-4C25-9CA7-59878E3D4FFB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{12A9E74D-CCA7-41FD-B8EA-F308FDC943A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{12A9E74D-CCA7-41FD-B8EA-F308FDC943A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{12A9E74D-CCA7-41FD-B8EA-F308FDC943A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{12A9E74D-CCA7-41FD-B8EA-F308FDC943A2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{92207667-DC9F-4DE8-954D-0067839B89CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{92207667-DC9F-4DE8-954D-0067839B89CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92207667-DC9F-4DE8-954D-0067839B89CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
