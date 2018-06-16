@@ -150,9 +150,11 @@
     <PackageReference Include="Microsoft.Net.Http.Headers" Version="2.1.0" />
     <PackageReference Include="Microsoft.Office.Interop.Word" Version="15.0.4797.1003" />
     <PackageReference Include="PdfiumViewer" Version="2.13.0" />
+    <PackageReference Include="PdfiumViewer.Native.x86.v8-xfa" Version="2018.4.8.256" />
+    <PackageReference Include="PdfiumViewer.Native.x86_64.v8-xfa" Version="2018.4.8.256" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="netstandard"/>
+    <Reference Include="netstandard" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ReportDotNet.Core\ReportDotNet.Core.csproj" />
@@ -173,11 +175,5 @@
     <Content Include="Examples\StampAndSigns\AccountantSign.png" />
     <Content Include="Examples\StampAndSigns\BossSign.png" />
     <Content Include="Examples\StampAndSigns\Stamp.png" />
-    <Content Include="x64\pdfium.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="x86\pdfium.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 </Project>
