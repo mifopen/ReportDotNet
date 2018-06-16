@@ -1,7 +1,10 @@
-﻿$(function () {
-    $.connection.hub.logging = true;
-    $.connection.reportHub.client.reportUpdated = refresh;
-    $.connection.hub.start();
+﻿window.onload = function () {
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("/reportHub")
+        .configureLogging(signalR.LogLevel.Information)
+        .build();
+    connection.on("ReportUpdated", refresh);
+    connection.start().catch(err => console.error(err.toString()));
     const pagePool = new PagePool();
     const $loader = $("#loader");
     const $pages = $("#pages");
@@ -54,7 +57,7 @@
     function getTemplateName() {
         return $("#templateName").val();
     }
-});
+};
 
 class Page {
     constructor($html) {

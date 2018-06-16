@@ -1,0 +1,9 @@
+{
+  "name": "ReportDotNet.Web",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@aspnet/signalr": "^1.0.0"
+  }
+}

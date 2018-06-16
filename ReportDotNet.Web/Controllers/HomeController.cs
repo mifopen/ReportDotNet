@@ -1,8 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Web.Hosting;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using ReportDotNet.Web.App;
 
 namespace ReportDotNet.Web.Controllers
@@ -13,16 +14,22 @@ namespace ReportDotNet.Web.Controllers
         private readonly PdfToPngConverter pdfToPngConverter;
         private readonly ReportRenderer reportRenderer;
         private readonly DirectoryWatcher directoryWatcher;
+        private readonly IHostingEnvironment hostingEnvironment;
+        private readonly IMemoryCache memoryCache;
 
         public HomeController(WordToPdfConverter wordToPdfConverter,
                               PdfToPngConverter pdfToPngConverter,
                               ReportRenderer reportRenderer,
-                              DirectoryWatcher directoryWatcher)
+                              DirectoryWatcher directoryWatcher,
+                              IHostingEnvironment hostingEnvironment,
+                              IMemoryCache memoryCache)
         {
             this.wordToPdfConverter = wordToPdfConverter;
             this.pdfToPngConverter = pdfToPngConverter;
             this.reportRenderer = reportRenderer;
             this.directoryWatcher = directoryWatcher;
+            this.hostingEnvironment = hostingEnvironment;
+            this.memoryCache = memoryCache;
         }
 
         public ActionResult Index()
@@ -41,7 +48,7 @@ namespace ReportDotNet.Web.Controllers
                         {
                             Log = string.Join("<br/>", renderedReport.Log),
                             PagesCount = CachedImages.Length
-                        }, JsonRequestBehavior.AllowGet);
+                        });
         }
 
         [HttpGet]
@@ -84,9 +91,9 @@ namespace ReportDotNet.Web.Controllers
             }
         }
 
-        private static string GetTemplateProjectDirectory()
+        private string GetTemplateProjectDirectory()
         {
-            var webProjectPath = HostingEnvironment.ApplicationPhysicalPath;
+            var webProjectPath = hostingEnvironment.ContentRootPath;
             return Path.Combine(webProjectPath, "Examples");
         }
 
@@ -94,8 +101,8 @@ namespace ReportDotNet.Web.Controllers
 
         private byte[][] CachedImages
         {
-            get => (byte[][]) ControllerContext.HttpContext.Cache[cacheKey];
-            set => ControllerContext.HttpContext.Cache[cacheKey] = value;
+            get => memoryCache.Get<byte[][]>(cacheKey);
+            set => memoryCache.Set(cacheKey, value);
         }
     }
 }

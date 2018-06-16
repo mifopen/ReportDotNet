@@ -1,11 +1,18 @@
 using System.IO;
-using Microsoft.AspNet.SignalR;
+using Microsoft.AspNetCore.SignalR;
 using ReportDotNet.Web.Controllers;
 
 namespace ReportDotNet.Web.App
 {
     public class DirectoryWatcher
     {
+        private readonly IHubContext<ReportHub> hubContext;
+
+        public DirectoryWatcher(IHubContext<ReportHub> hubContext)
+        {
+            this.hubContext = hubContext;
+        }
+
         private FileSystemWatcher currentWatcher;
         private string currentFolder;
 
@@ -32,11 +39,10 @@ namespace ReportDotNet.Web.App
             }
         }
 
-        private static void Handler(object sender,
-                                    FileSystemEventArgs e)
+        private void Handler(object sender,
+                             FileSystemEventArgs e)
         {
-            var context = GlobalHost.ConnectionManager.GetHubContext<ReportHub>();
-            context.Clients.All.reportUpdated();
+            hubContext.Clients.All.SendCoreAsync("reportUpdated", new object[0]);
         }
     }
 }

@@ -1,4 +1,4 @@
-using Microsoft.AspNet.SignalR;
+﻿using Microsoft.AspNetCore.SignalR;
 
 namespace ReportDotNet.Web.Controllers
 {
