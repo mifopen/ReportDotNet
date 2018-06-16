@@ -62,7 +62,11 @@ namespace ReportDotNet.Web.App
             var templateAssembly = Assembly.GetExecutingAssembly();
             var references = templateAssembly.GetReferencedAssemblies()
                                              .Select(x => x.FullName)
-                                             .Concat(new[] { "System.Runtime, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" })
+                                             .Concat(new[]
+                                                     {
+                                                         "System.Runtime, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a",
+                                                         "netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51"
+                                                     })
                                              .Distinct()
                                              .Select(Assembly.Load)
                                              .Concat(new[] { templateAssembly })

@@ -29,7 +29,7 @@
         $("#error_iframe").hide();
         $.getJSON(`/Home/Render?templateName=${getTemplateName()}`)
             .done(res => {
-                $("#log").html(res.Log);
+                $("#log").html(res.Log || "none");
                 const pages = pagePool.acquire(res.PagesCount);
                 for (let i = 0; i < res.PagesCount; i++)
                     pages[i].setImageSrc(`/Home/GetPage?pageNumber=${i}&hash=${Date.now()}`);

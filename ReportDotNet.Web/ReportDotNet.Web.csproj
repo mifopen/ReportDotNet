@@ -152,6 +152,9 @@
     <PackageReference Include="PdfiumViewer" Version="2.13.0" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="netstandard"/>
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\ReportDotNet.Core\ReportDotNet.Core.csproj" />
     <ProjectReference Include="..\ReportDotNet.Docx\ReportDotNet.Docx.csproj" />
   </ItemGroup>

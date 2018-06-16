@@ -35,7 +35,7 @@ namespace ReportDotNet.Web.Examples.PaymentOrder
 
         public string SumCopecks => ((Sum - Math.Floor(Sum)) * 100).ToString().PadLeft(2, '0');
 
-        public string SumInWords => "����� ��������";
+        public string SumInWords => "ten hundreds";
 
         public string LegalName33First => SplitIn2Lines(LegalName, 33)[0];
 
