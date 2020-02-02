@@ -1,32 +1,31 @@
 ﻿using System.Drawing;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Shouldly;
+using Xunit;
 using static ReportDotNet.Core.Factories;
 
 namespace ReportDotNet.Core.Tests
 {
-    [TestClass]
     public class CellBuilderTest
     {
-        [TestMethod]
+        [Fact]
         public void Simple()
         {
             var cellBuilder = Cell()
-                .Alignment(Alignment.Center)
-                .BackgroundColor(Color.Blue)
-                .Bold()
-                .BorderSize(7)
-                .Borders(Borders.Bottom | Borders.Right)
-                .Borders(top: BorderStyle.DotDash, bottom: BorderStyle.DotDotDash)
-                .FontSize(26)
-                .Margin(left: 3, right: 9)
-                .MergeDown()
-                .MergeUp()
-                .SpaceBetweenLines(1.15)
-                .TextDirection(TextDirection.LeftRight_TopBottom)
-                .VerticalAlignment(VerticalAlignment.Center)
-                .Width(32)
-                .Add("some text");
+                              .Alignment(Alignment.Center)
+                              .BackgroundColor(Color.Blue)
+                              .Bold()
+                              .BorderSize(7)
+                              .Borders(Borders.Bottom | Borders.Right)
+                              .Borders(top: BorderStyle.DotDash, bottom: BorderStyle.DotDotDash)
+                              .FontSize(26)
+                              .Margin(left: 3, right: 9)
+                              .MergeDown()
+                              .MergeUp()
+                              .SpaceBetweenLines(1.15)
+                              .TextDirection(TextDirection.LeftRight_TopBottom)
+                              .VerticalAlignment(VerticalAlignment.Center)
+                              .Width(32)
+                              .Add("some text");
             var cellParameters = cellBuilder.Build().Parameters;
             cellParameters.Width.ShouldBe(32);
             cellParameters.BackgroundColor.ShouldBe(Color.Blue);
