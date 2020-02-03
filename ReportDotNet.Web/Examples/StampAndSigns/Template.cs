@@ -11,7 +11,6 @@ namespace ReportDotNet.Web.Examples.StampAndSigns
                                         Action<object> log,
                                         string currentTemplateDirectory)
         {
-            log(currentTemplateDirectory);
             FillDocument(document, new Data
                                    {
                                        AccountantName = "Accountant Name",

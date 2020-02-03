@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>ReportDotNet</title>
+    <meta charset="utf-8"/>
+    <link href="/index.css" rel="stylesheet"/>
+</head>
+<body>
+
+<div id="main_content" class="pageWrap">
+
+    <div class="leftPanel">
+        <div class="section">
+            <div class="text">
+                <div class="header">Template</div>
+                <input type="text" id="templateName"/>
+                <button id="templateNameButton">save</button>
+            </div>
+
+        </div>
+        <div class="section">
+            <div class="text">
+                <div class="header">Log</div>
+                <span id="log"></span>
+            </div>
+
+        </div>
+        <div class="section">
+            <span class="text">
+                <div class="header">Timestamp</div>
+                <span id="time"></span>
+            </span>
+        </div>
+        <div class="section">
+            <button id="downloadButton">Download .docx</button>
+        </div>
+
+        <div id="loader" class="lds-roller">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+
+    <iframe id="google_doc_iframe" class="googleDocIframe"></iframe>
+</div>
+
+<iframe id="error_iframe" onload="this.width = screen.width;this.height = screen.height;" style="display: none;"></iframe>
+
+<script src="/signalr.min.js"></script>
+<script src="/jquery-3.1.1.min.js"></script>
+<script src="/index.js"></script>
+</body>
+</html>

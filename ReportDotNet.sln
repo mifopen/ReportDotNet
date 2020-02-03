@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportDotNet.Docx", "Report
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportDotNet.Core.Tests", "ReportDotNet.Core.Tests\ReportDotNet.Core.Tests.csproj", "{92207667-DC9F-4DE8-954D-0067839B89CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportDotNet.Web", "ReportDotNet.Web\ReportDotNet.Web.csproj", "{1A239772-5536-431B-9CA8-BFCC5DF986D7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportDotNet.Web", "ReportDotNet.Web\ReportDotNet.Web.csproj", "{B0ED4323-F629-4FDC-AC84-7E7976D110FD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{92207667-DC9F-4DE8-954D-0067839B89CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92207667-DC9F-4DE8-954D-0067839B89CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{92207667-DC9F-4DE8-954D-0067839B89CD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1A239772-5536-431B-9CA8-BFCC5DF986D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1A239772-5536-431B-9CA8-BFCC5DF986D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1A239772-5536-431B-9CA8-BFCC5DF986D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1A239772-5536-431B-9CA8-BFCC5DF986D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0ED4323-F629-4FDC-AC84-7E7976D110FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0ED4323-F629-4FDC-AC84-7E7976D110FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0ED4323-F629-4FDC-AC84-7E7976D110FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0ED4323-F629-4FDC-AC84-7E7976D110FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

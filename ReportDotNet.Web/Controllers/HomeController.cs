@@ -1,60 +1,42 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
 using ReportDotNet.Web.App;
 
 namespace ReportDotNet.Web.Controllers
 {
-    public class HomeController: Controller
+    public class HomeController : Controller
     {
-        private readonly WordToPdfConverter wordToPdfConverter;
-        private readonly PdfToPngConverter pdfToPngConverter;
+        private readonly GoogleDocsUploader googleDocsUploader;
         private readonly ReportRenderer reportRenderer;
         private readonly DirectoryWatcher directoryWatcher;
-        private readonly IHostingEnvironment hostingEnvironment;
-        private readonly IMemoryCache memoryCache;
+        private readonly IWebHostEnvironment webHostEnvironment;
 
-        public HomeController(WordToPdfConverter wordToPdfConverter,
-                              PdfToPngConverter pdfToPngConverter,
+        public HomeController(GoogleDocsUploader googleDocsUploader,
                               ReportRenderer reportRenderer,
                               DirectoryWatcher directoryWatcher,
-                              IHostingEnvironment hostingEnvironment,
-                              IMemoryCache memoryCache)
+                              IWebHostEnvironment webHostEnvironment)
         {
-            this.wordToPdfConverter = wordToPdfConverter;
-            this.pdfToPngConverter = pdfToPngConverter;
+            this.googleDocsUploader = googleDocsUploader;
             this.reportRenderer = reportRenderer;
             this.directoryWatcher = directoryWatcher;
-            this.hostingEnvironment = hostingEnvironment;
-            this.memoryCache = memoryCache;
-        }
-
-        public ActionResult Index()
-        {
-            return View();
+            this.webHostEnvironment = webHostEnvironment;
         }
 
         [HttpGet]
-        public JsonResult Render(string templateName)
+        public async Task<JsonResult> Render(string templateName)
         {
             var templateDirectoryPath = GetTemplateDirectoryPath(templateName);
             var renderedReport = reportRenderer.Render(templateDirectoryPath);
-            var pdf = wordToPdfConverter.Convert(renderedReport.Bytes);
-            CachedImages = pdfToPngConverter.Convert(pdf);
+            var googleDocFileId = await googleDocsUploader.Update(renderedReport.Bytes);
             return Json(new
                         {
                             Log = string.Join("<br/>", renderedReport.Log),
-                            PagesCount = CachedImages.Length
+                            GoogleDocUrl = $"https://docs.google.com/document/d/{googleDocFileId}/edit"
                         });
-        }
-
-        [HttpGet]
-        public FileContentResult GetPage(int pageNumber)
-        {
-            return File(CachedImages[pageNumber], "image/png");
         }
 
         [HttpGet]
@@ -85,7 +67,7 @@ namespace ReportDotNet.Web.Controllers
                 var directories = new DirectoryInfo(templateProjectDirectory)
                                   .EnumerateDirectories()
                                   .Select(x => x.Name)
-                                  .Except(new[] { "bin", "obj", "Properties" });
+                                  .Except(new[] {"bin", "obj", "Properties"});
                 throw new Exception($"Are you sure that directory {templateDirectoryName} exists in template project?" +
                                     $" There are only {string.Join(", ", directories)}.");
             }
@@ -93,16 +75,8 @@ namespace ReportDotNet.Web.Controllers
 
         private string GetTemplateProjectDirectory()
         {
-            var webProjectPath = hostingEnvironment.ContentRootPath;
+            var webProjectPath = webHostEnvironment.ContentRootPath;
             return Path.Combine(webProjectPath, "Examples");
-        }
-
-        private const string cacheKey = "HomeController.CachedImages";
-
-        private byte[][] CachedImages
-        {
-            get => memoryCache.Get<byte[][]>(cacheKey);
-            set => memoryCache.Set(cacheKey, value);
         }
     }
 }

@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.Extensions.DependencyModel;
 using ReportDotNet.Core;
 using ReportDotNet.Docx;
 
@@ -32,8 +33,8 @@ namespace ReportDotNet.Web.App
             var method = GetFillDocumentMethod(templateType);
             var document = Create.Document.Docx();
             var arguments = method.GetParameters().Length == 2
-                                ? new object[] { document, logAction }
-                                : new object[] { document, logAction, templateDirectoryPath };
+                                ? new object[] {document, logAction}
+                                : new object[] {document, logAction, templateDirectoryPath};
             method.Invoke(null, arguments);
 
             return new RenderedReport
@@ -59,23 +60,18 @@ namespace ReportDotNet.Web.App
 
         private static Type CreateTemplateType(string templatePath)
         {
-            var templateAssembly = Assembly.GetExecutingAssembly();
-            var references = templateAssembly.GetReferencedAssemblies()
-                                             .Select(x => x.FullName)
-                                             .Concat(new[]
-                                                     {
-                                                         "System.Runtime, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a",
-                                                         "netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51"
-                                                     })
-                                             .Distinct()
-                                             .Select(Assembly.Load)
-                                             .Concat(new[] { templateAssembly })
-                                             .Select(a => MetadataReference.CreateFromFile(a.Location))
-                                             .ToArray();
+            var defaultCompileLibraries = DependencyContext.Default.CompileLibraries;
+                                                           // .Where(x => x.Name.Contains("ReportDotNet")
+                                                           //             || x.Name == "Microsoft.NETCore.App");
+            var references = defaultCompileLibraries
+                             .SelectMany(cl => cl.ResolveReferencePaths())
+                             .Select(asm => MetadataReference.CreateFromFile(asm))
+                             .ToArray();
             var compilation = CSharpCompilation.Create(assemblyName: "NewReport.dll",
-                                                       syntaxTrees: new[] { GetSyntaxTree(templatePath) },
+                                                       syntaxTrees: new[] {GetSyntaxTree(templatePath)},
                                                        references: references,
-                                                       options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+                                                       options: new CSharpCompilationOptions(
+                                                           OutputKind.DynamicallyLinkedLibrary));
             try
             {
                 using (var ms = new MemoryStream())
@@ -85,7 +81,8 @@ namespace ReportDotNet.Web.App
                     {
                         var types = Assembly.Load(ms.ToArray()).GetTypes().Where(x => x.Name == "Template").ToArray();
                         if (types.Length != 1)
-                            throw new Exception($"There must be at least one type with name Template in example {templatePath}");
+                            throw new Exception(
+                                $"There must be at least one type with name Template in example {templatePath}");
 
                         return types.Single();
                     }
@@ -93,7 +90,8 @@ namespace ReportDotNet.Web.App
                     var failures = result.Diagnostics.Where(diagnostic =>
                                                                 diagnostic.IsWarningAsError ||
                                                                 diagnostic.Severity == DiagnosticSeverity.Error);
-                    throw new InvalidOperationException(string.Join(Environment.NewLine, failures.Select(x => $"{x.Id}: {x.GetMessage()}")));
+                    throw new InvalidOperationException(
+                        string.Join(Environment.NewLine, failures.Select(x => $"{x.Id}: {x.GetMessage()}")));
                 }
             }
             finally
@@ -116,9 +114,11 @@ namespace ReportDotNet.Web.App
                                });
         }
 
-        private static readonly Regex logRegex = new Regex("\\slog[(](.*)[)];", RegexOptions.Compiled | RegexOptions.Singleline);
+        private static readonly Regex logRegex =
+            new Regex("\\slog[(](.*)[)];", RegexOptions.Compiled | RegexOptions.Singleline);
 
-        private static readonly Regex logParameterRegex = new Regex("\\sAction<object> log", RegexOptions.Compiled | RegexOptions.Singleline);
+        private static readonly Regex logParameterRegex =
+            new Regex("\\sAction<object> log", RegexOptions.Compiled | RegexOptions.Singleline);
 
         private static SyntaxTree GetSyntaxTree(string fileName)
         {
