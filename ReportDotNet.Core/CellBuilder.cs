@@ -24,6 +24,8 @@ namespace ReportDotNet.Core
         public CellBuilder Borders(Borders borders) => Chain(p => p.Borders = borders);
         public CellBuilder MergeUp(bool mergeUp = true) => Chain(p => p.MergeUp = mergeUp);
         public CellBuilder MergeDown(bool mergeDown = true) => Chain(p => p.MergeDown = mergeDown);
+        public CellBuilder MergeRight(bool mergeRight = true) => Chain(p => p.MergeRight = mergeRight);
+        public CellBuilder MergeLeft(bool mergeLeft = true) => Chain(p => p.MergeLeft = mergeLeft);
         public CellBuilder TextDirection(TextDirection textDirection) => Chain(p => p.TextDirection = textDirection);
         public CellBuilder BackgroundColor(Color backgroundColor) => Chain(p => p.BackgroundColor = backgroundColor);
         public CellBuilder BorderSize(int borderSize) => Chain(p => p.BorderSize = borderSize);

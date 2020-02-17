@@ -14,6 +14,11 @@ namespace ReportDotNet.Core
         public int? MarginBottom { get; set; }
         public bool MergeDown { get; set; }
         public bool MergeUp { get; set; }
+
+
+        public bool MergeLeft { get; set; }
+        public bool MergeRight { get; set; }
+
         public BorderStyle LeftBorderStyle { get; set; }
         public BorderStyle TopBorderStyle { get; set; }
         public BorderStyle RightBorderStyle { get; set; }
