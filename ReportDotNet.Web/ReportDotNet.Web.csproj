@@ -44,7 +44,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="2.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.HttpOverrides" Version="2.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.HttpsPolicy" Version="2.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="2.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="2.1.0" />
