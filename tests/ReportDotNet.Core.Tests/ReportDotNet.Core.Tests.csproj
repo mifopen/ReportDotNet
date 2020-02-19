@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ReportDotNet.Core\ReportDotNet.Core.csproj" />
+    <ProjectReference Include="..\..\src\ReportDotNet.Core\ReportDotNet.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
