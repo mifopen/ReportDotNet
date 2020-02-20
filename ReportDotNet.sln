@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportDotNet.Core", "ReportDotNet.Core\ReportDotNet.Core.csproj", "{3BE01964-7B8B-40E1-9BC1-8FA13AB274AE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportDotNet.Core", "src\ReportDotNet.Core\ReportDotNet.Core.csproj", "{3BE01964-7B8B-40E1-9BC1-8FA13AB274AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportDotNet.Docx", "ReportDotNet.Docx\ReportDotNet.Docx.csproj", "{4D668235-EDD3-4C25-9CA7-59878E3D4FFB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportDotNet.Docx", "src\ReportDotNet.Docx\ReportDotNet.Docx.csproj", "{4D668235-EDD3-4C25-9CA7-59878E3D4FFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportDotNet.Core.Tests", "ReportDotNet.Core.Tests\ReportDotNet.Core.Tests.csproj", "{92207667-DC9F-4DE8-954D-0067839B89CD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportDotNet.Core.Tests", "tests\ReportDotNet.Core.Tests\ReportDotNet.Core.Tests.csproj", "{92207667-DC9F-4DE8-954D-0067839B89CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportDotNet.Web", "ReportDotNet.Web\ReportDotNet.Web.csproj", "{1A239772-5536-431B-9CA8-BFCC5DF986D7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportDotNet.Web", "src\ReportDotNet.Web\ReportDotNet.Web.csproj", "{B0ED4323-F629-4FDC-AC84-7E7976D110FD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "build\_build.csproj", "{50E9C5BF-6D6E-4315-B5ED-2874B79DAC24}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,6 +19,8 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{50E9C5BF-6D6E-4315-B5ED-2874B79DAC24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50E9C5BF-6D6E-4315-B5ED-2874B79DAC24}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3BE01964-7B8B-40E1-9BC1-8FA13AB274AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3BE01964-7B8B-40E1-9BC1-8FA13AB274AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BE01964-7B8B-40E1-9BC1-8FA13AB274AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -29,10 +33,10 @@ Global
 		{92207667-DC9F-4DE8-954D-0067839B89CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92207667-DC9F-4DE8-954D-0067839B89CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{92207667-DC9F-4DE8-954D-0067839B89CD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1A239772-5536-431B-9CA8-BFCC5DF986D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1A239772-5536-431B-9CA8-BFCC5DF986D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1A239772-5536-431B-9CA8-BFCC5DF986D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1A239772-5536-431B-9CA8-BFCC5DF986D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0ED4323-F629-4FDC-AC84-7E7976D110FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0ED4323-F629-4FDC-AC84-7E7976D110FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0ED4323-F629-4FDC-AC84-7E7976D110FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0ED4323-F629-4FDC-AC84-7E7976D110FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
